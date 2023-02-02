@@ -1,0 +1,22 @@
+plugins {
+    id 'java'
+}
+
+group 'com.nokia.mid.appl.boun'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+
+    //implementation files('libs/nokia5100.jar')
+    implementation files('libs/nokia_s40.jar')
+}
+
+test {
+    useJUnitPlatform()
+}
