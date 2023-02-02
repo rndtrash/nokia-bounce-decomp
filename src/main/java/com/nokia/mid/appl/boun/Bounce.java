@@ -23,7 +23,7 @@ public class Bounce extends MIDlet {
     public void destroyApp(boolean paramBoolean) {
         if (this.BounceGame != null && this.BounceGame.v != null) {
             this.BounceGame.WriteToStore(3);
-            this.BounceGame.v.j();
+            this.BounceGame.v.StopGameTimer();
         }
         Display.getDisplay(this).setCurrent(null);
         this.BounceGame = null;

@@ -12,13 +12,60 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public abstract class b extends FullCanvas {
-    public enum ImageManipulation {
-        FLIP_HORIZONTAL, // 0
-        FLIP_VERTICAL, // 1
-        FLIP_BOTH, // 2
-        ROTATE_90, // 3
-        ROTATE_180, // 4
-        ROTATE_270, // 5
+    public static final class BounceColors {
+        public static final int ALPHA = 0xff000000;
+        public static final int SKY = 0xb0e0f0;
+        public static final int SKY_ALPHA = ALPHA | SKY;
+        public static final int WATER = 0x1060b0;
+        public static final int WATER_ALPHA = ALPHA | WATER;
+    }
+
+    public static final class ImageManipulation {
+        public static final int FLIP_HORIZONTAL = 0;
+        public static final int FLIP_VERTICAL = 1;
+        public static final int FLIP_BOTH = 2;
+        /**
+         * Rotate counter-clockwise by 90 degrees
+         */
+        public static final int ROTATE_90 = 3;
+        /**
+         * Rotate counter-clockwise by 180 degrees
+         */
+        public static final int ROTATE_180 = 4;
+        /**
+         * Rotate counter-clockwise by 270 degrees
+         */
+        public static final int ROTATE_270 = 5;
+    }
+
+    public static final class SpriteIDs {
+        public static final int BRICK_WALL = 0;
+        public static final int RUBBER_WALL = 1;
+
+        public static final int SPIKES_UP = 2;
+        public static final int SPIKES_DOWN = 3;
+        public static final int SPIKES_LEFT = 4;
+        public static final int SPIKES_RIGHT = 5;
+
+        public static final int SPIKES_WATER_UP = 6;
+        public static final int SPIKES_WATER_DOWN = 7;
+        public static final int SPIKES_WATER_LEFT = 8;
+        public static final int SPIKES_WATER_RIGHT = 9;
+
+        /**
+         * A.K.A. Checkpoint
+         */
+        public static final int CRYSTAL = 10;
+        /**
+         * A.K.A. Active checkpoint
+         */
+        public static final int CRYSTAL_ACTIVE = 11;
+
+        public static final int EXIT = 12;
+
+        public static final int BALL = 47;
+        public static final int POPPED_BALL = 48;
+        public static final int BIG_BALL = 49;
     }
 
     protected int l;
@@ -35,7 +82,7 @@ public abstract class b extends FullCanvas {
 
     protected Image E;
 
-    private Image[] Q;
+    private Image[] Sprites;
 
     private Image I;
 
@@ -68,7 +115,7 @@ public abstract class b extends FullCanvas {
 
     public int ai;
 
-    public int ringsTotal;
+    public int HoopsTotal;
 
     public int B;
 
@@ -88,7 +135,7 @@ public abstract class b extends FullCanvas {
 
     public Image imageBall;
 
-    public Image imageRing;
+    public Image imageHoop;
 
     public int al;
 
@@ -108,7 +155,7 @@ public abstract class b extends FullCanvas {
 
     protected Display display;
 
-    public BounceTimer ab = null;
+    public BounceTimer GameTimer = null;
 
     public b(Display display) {
         this.display = display;
@@ -157,8 +204,8 @@ public abstract class b extends FullCanvas {
             }
             this.W = levelDIS.read();
             this.V = levelDIS.read();
-            CreateTiles(this.W, this.V, this.Q[12]);
-            this.ringsTotal = levelDIS.read();
+            CreateTiles(this.W, this.V, this.Sprites[SpriteIDs.EXIT]);
+            this.HoopsTotal = levelDIS.read();
             this.c = levelDIS.read();
             this.ai = levelDIS.read();
             this.C = new short[this.ai][this.c];
@@ -174,34 +221,34 @@ public abstract class b extends FullCanvas {
         }
     }
 
-    public static Image CreateTiles(Image paramImage, ImageManipulation manipulation) {
+    public static Image CreateTiles(Image paramImage, int manipulation) {
         Image image = DirectUtils.createImage(paramImage.getWidth(), paramImage.getHeight(), 0);
         if (image == null)
             image = Image.createImage(paramImage.getWidth(), paramImage.getHeight());
         Graphics graphics = image.getGraphics();
         DirectGraphics directGraphics = DirectUtils.getDirectGraphics(graphics);
         switch (manipulation) {
-            case FLIP_HORIZONTAL -> {
+            case ImageManipulation.FLIP_HORIZONTAL -> {
                 directGraphics.drawImage(paramImage, 0, 0, Graphics.TOP | Graphics.LEFT, DirectGraphics.FLIP_HORIZONTAL);
                 return image;
             }
-            case FLIP_VERTICAL -> {
+            case ImageManipulation.FLIP_VERTICAL -> {
                 directGraphics.drawImage(paramImage, 0, 0, Graphics.TOP | Graphics.LEFT, DirectGraphics.FLIP_VERTICAL);
                 return image;
             }
-            case FLIP_BOTH -> {
+            case ImageManipulation.FLIP_BOTH -> {
                 directGraphics.drawImage(paramImage, 0, 0, Graphics.TOP | Graphics.LEFT, DirectGraphics.FLIP_HORIZONTAL | DirectGraphics.FLIP_VERTICAL);
                 return image;
             }
-            case ROTATE_90 -> {
+            case ImageManipulation.ROTATE_90 -> {
                 directGraphics.drawImage(paramImage, 0, 0, Graphics.TOP | Graphics.LEFT, DirectGraphics.ROTATE_90);
                 return image;
             }
-            case ROTATE_180 -> {
+            case ImageManipulation.ROTATE_180 -> {
                 directGraphics.drawImage(paramImage, 0, 0, Graphics.TOP | Graphics.LEFT, DirectGraphics.ROTATE_180);
                 return image;
             }
-            case ROTATE_270 -> {
+            case ImageManipulation.ROTATE_270 -> {
                 directGraphics.drawImage(paramImage, 0, 0, Graphics.TOP | Graphics.LEFT, DirectGraphics.ROTATE_270);
                 return image;
             }
@@ -231,14 +278,14 @@ public abstract class b extends FullCanvas {
         }
         this.L = Image.createImage(24, 24);
         Graphics graphics = this.L.getGraphics();
-        graphics.drawImage(this.Q[46], 0, 0, 20);
-        graphics.drawImage(CreateTiles(this.Q[46], ImageManipulation.FLIP_HORIZONTAL), 12, 0, 20);
-        graphics.drawImage(CreateTiles(this.Q[46], ImageManipulation.ROTATE_180), 12, 12, 20);
-        graphics.drawImage(CreateTiles(this.Q[46], ImageManipulation.FLIP_VERTICAL), 0, 12, 20);
+        graphics.drawImage(this.Sprites[46], 0, 0, Graphics.TOP | Graphics.LEFT);
+        graphics.drawImage(CreateTiles(this.Sprites[46], ImageManipulation.FLIP_HORIZONTAL), 12, 0, Graphics.TOP | Graphics.LEFT);
+        graphics.drawImage(CreateTiles(this.Sprites[46], ImageManipulation.ROTATE_180), 12, 12, Graphics.TOP | Graphics.LEFT);
+        graphics.drawImage(CreateTiles(this.Sprites[46], ImageManipulation.FLIP_VERTICAL), 0, 12, Graphics.TOP | Graphics.LEFT);
         graphics = null;
     }
 
-    public void r() {
+    public void RunGarbageCollector() {
         for (byte b1 = 0; b1 < this.B; b1++) {
             this.r[b1] = null;
             this.an[b1] = null;
@@ -311,59 +358,59 @@ public abstract class b extends FullCanvas {
         int k;
         Graphics graphics = this.E.getGraphics();
         if (paramInt1 < 0 || paramInt2 < 0 || paramInt1 >= this.c || paramInt2 >= this.ai) {
-            graphics.drawImage(this.Q[0], paramInt3, paramInt4, 20);
+            graphics.drawImage(this.Sprites[SpriteIDs.BRICK_WALL], paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
             return;
         }
         this.C[paramInt2][paramInt1] = (short) (this.C[paramInt2][paramInt1] & 0xFF7F);
         int i = this.C[paramInt2][paramInt1];
-        boolean bool = ((i & 0x40) != 0) ? true : false;
-        if (bool)
-            i = i & 0xFFFFFFBF;
-        graphics.setColor(bool ? 1073328 : 11591920);
+        boolean isInWater = (i & 0x40) != 0; // TODO: investigate this bit mask
+        if (isInWater)
+            i = i & (~0x40);
+        graphics.setColor(isInWater ? BounceColors.WATER : BounceColors.SKY);
         switch (i) {
-            case 1 -> graphics.drawImage(this.Q[0], paramInt3, paramInt4, 20);
+            case 1 -> graphics.drawImage(this.Sprites[SpriteIDs.BRICK_WALL], paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
             case 0 -> graphics.fillRect(paramInt3, paramInt4, 12, 12);
-            case 2 -> graphics.drawImage(this.Q[1], paramInt3, paramInt4, 20);
+            case 2 -> graphics.drawImage(this.Sprites[SpriteIDs.RUBBER_WALL], paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
             case 3 -> {
-                if (bool) {
-                    graphics.drawImage(this.Q[6], paramInt3, paramInt4, 20);
+                if (isInWater) {
+                    graphics.drawImage(this.Sprites[SpriteIDs.SPIKES_WATER_UP], paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
                     break;
                 }
-                graphics.drawImage(this.Q[2], paramInt3, paramInt4, 20);
+                graphics.drawImage(this.Sprites[SpriteIDs.SPIKES_UP], paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
             }
             case 4 -> {
-                if (bool) {
-                    graphics.drawImage(this.Q[9], paramInt3, paramInt4, 20);
+                if (isInWater) {
+                    graphics.drawImage(this.Sprites[SpriteIDs.SPIKES_WATER_RIGHT], paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
                     break;
                 }
-                graphics.drawImage(this.Q[5], paramInt3, paramInt4, 20);
+                graphics.drawImage(this.Sprites[SpriteIDs.SPIKES_RIGHT], paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
             }
             case 5 -> {
-                if (bool) {
-                    graphics.drawImage(this.Q[7], paramInt3, paramInt4, 20);
+                if (isInWater) {
+                    graphics.drawImage(this.Sprites[SpriteIDs.SPIKES_WATER_DOWN], paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
                     break;
                 }
-                graphics.drawImage(this.Q[3], paramInt3, paramInt4, 20);
+                graphics.drawImage(this.Sprites[SpriteIDs.SPIKES_DOWN], paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
             }
             case 6 -> {
-                if (bool) {
-                    graphics.drawImage(this.Q[8], paramInt3, paramInt4, 20);
+                if (isInWater) {
+                    graphics.drawImage(this.Sprites[SpriteIDs.SPIKES_WATER_LEFT], paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
                     break;
                 }
-                graphics.drawImage(this.Q[4], paramInt3, paramInt4, 20);
+                graphics.drawImage(this.Sprites[SpriteIDs.SPIKES_LEFT], paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
             }
-            case 7 -> graphics.drawImage(this.Q[10], paramInt3, paramInt4, 20);
-            case 8 -> graphics.drawImage(this.Q[11], paramInt3, paramInt4, 20);
+            case 7 -> graphics.drawImage(this.Sprites[SpriteIDs.CRYSTAL], paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
+            case 8 -> graphics.drawImage(this.Sprites[SpriteIDs.CRYSTAL_ACTIVE], paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
             case 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28 -> {
                 graphics.fillRect(paramInt3, paramInt4, 12, 12);
-                graphics.drawImage(this.Q[com.nokia.mid.appl.boun.d.a[i - 13]], paramInt3, paramInt4, 20);
-                graphics.drawImage(this.Q[com.nokia.mid.appl.boun.d.b[i - 13]], paramInt3, paramInt4, 20);
+                graphics.drawImage(this.Sprites[com.nokia.mid.appl.boun.d.a[i - 13]], paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
+                graphics.drawImage(this.Sprites[com.nokia.mid.appl.boun.d.b[i - 13]], paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
             }
             case 9 -> {
                 j = (paramInt1 - this.al) * 12;
                 k = (paramInt2 - this.u) * 12;
                 graphics.setClip(paramInt3, paramInt4, 12, 12);
-                graphics.drawImage(this.aa, paramInt3 - j, paramInt4 - k, 20);
+                graphics.drawImage(this.aa, paramInt3 - j, paramInt4 - k, Graphics.TOP | Graphics.LEFT);
                 graphics.setClip(0, 0, this.E.getWidth(), this.E.getHeight());
                 this.z = true;
             }
@@ -375,108 +422,108 @@ public abstract class b extends FullCanvas {
                     int n = this.w[j][0] - k;
                     int i1 = this.w[j][1] - m;
                     if ((n > -36 && n < 12) || (i1 > -36 && i1 < 12)) {
-                        this.J.setColor(11591920);
+                        this.J.setColor(BounceColors.SKY);
                         this.J.fillRect(0, 0, 12, 12);
-                        this.J.drawImage(this.L, n, i1, 20);
-                        graphics.drawImage(this.I, paramInt3, paramInt4, 20);
+                        this.J.drawImage(this.L, n, i1, Graphics.TOP | Graphics.LEFT);
+                        graphics.drawImage(this.I, paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
                         break;
                     }
-                    graphics.setColor(11591920);
+                    graphics.setColor(BounceColors.SKY);
                     graphics.fillRect(paramInt3, paramInt4, 12, 12);
                 }
             }
-            case 29 -> graphics.drawImage(this.Q[45], paramInt3, paramInt4, 20);
+            case 29 -> graphics.drawImage(this.Sprites[45], paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
             case 30 -> {
-                if (bool) {
-                    graphics.drawImage(this.Q[61], paramInt3, paramInt4, 20);
+                if (isInWater) {
+                    graphics.drawImage(this.Sprites[61], paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
                     break;
                 }
-                graphics.drawImage(this.Q[57], paramInt3, paramInt4, 20);
+                graphics.drawImage(this.Sprites[57], paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
             }
             case 31 -> {
-                if (bool) {
-                    graphics.drawImage(this.Q[60], paramInt3, paramInt4, 20);
+                if (isInWater) {
+                    graphics.drawImage(this.Sprites[60], paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
                     break;
                 }
-                graphics.drawImage(this.Q[56], paramInt3, paramInt4, 20);
+                graphics.drawImage(this.Sprites[56], paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
             }
             case 32 -> {
-                if (bool) {
-                    graphics.drawImage(this.Q[59], paramInt3, paramInt4, 20);
+                if (isInWater) {
+                    graphics.drawImage(this.Sprites[59], paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
                     break;
                 }
-                graphics.drawImage(this.Q[55], paramInt3, paramInt4, 20);
+                graphics.drawImage(this.Sprites[55], paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
             }
             case 33 -> {
-                if (bool) {
-                    graphics.drawImage(this.Q[62], paramInt3, paramInt4, 20);
+                if (isInWater) {
+                    graphics.drawImage(this.Sprites[62], paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
                     break;
                 }
-                graphics.drawImage(this.Q[58], paramInt3, paramInt4, 20);
+                graphics.drawImage(this.Sprites[58], paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
             }
             case 34 -> {
                 graphics.fillRect(paramInt3, paramInt4, 12, 12);
-                graphics.drawImage(this.Q[65], paramInt3, paramInt4, 20);
+                graphics.drawImage(this.Sprites[65], paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
             }
             case 35 -> {
                 graphics.fillRect(paramInt3, paramInt4, 12, 12);
-                graphics.drawImage(this.Q[64], paramInt3, paramInt4, 20);
+                graphics.drawImage(this.Sprites[64], paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
             }
             case 36 -> {
                 graphics.fillRect(paramInt3, paramInt4, 12, 12);
-                graphics.drawImage(this.Q[63], paramInt3, paramInt4, 20);
+                graphics.drawImage(this.Sprites[63], paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
             }
             case 37 -> {
                 graphics.fillRect(paramInt3, paramInt4, 12, 12);
-                graphics.drawImage(this.Q[66], paramInt3, paramInt4, 20);
+                graphics.drawImage(this.Sprites[66], paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
             }
             case 39 -> {
                 graphics.fillRect(paramInt3, paramInt4, 12, 12);
-                graphics.drawImage(this.Q[50], paramInt3, paramInt4, 20);
+                graphics.drawImage(this.Sprites[50], paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
             }
             case 40 -> {
                 graphics.fillRect(paramInt3, paramInt4, 12, 12);
-                graphics.drawImage(CreateTiles(this.Q[50], ImageManipulation.ROTATE_270), paramInt3, paramInt4, 20);
+                graphics.drawImage(CreateTiles(this.Sprites[50], ImageManipulation.ROTATE_270), paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
             }
             case 41 -> {
                 graphics.fillRect(paramInt3, paramInt4, 12, 12);
-                graphics.drawImage(CreateTiles(this.Q[50], ImageManipulation.ROTATE_180), paramInt3, paramInt4, 20);
+                graphics.drawImage(CreateTiles(this.Sprites[50], ImageManipulation.ROTATE_180), paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
             }
             case 42 -> {
                 graphics.fillRect(paramInt3, paramInt4, 12, 12);
-                graphics.drawImage(CreateTiles(this.Q[50], ImageManipulation.ROTATE_90), paramInt3, paramInt4, 20);
+                graphics.drawImage(CreateTiles(this.Sprites[50], ImageManipulation.ROTATE_90), paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
             }
             case 43 -> {
                 graphics.fillRect(paramInt3, paramInt4, 12, 12);
-                graphics.drawImage(this.Q[51], paramInt3, paramInt4, 20);
+                graphics.drawImage(this.Sprites[51], paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
             }
             case 44 -> {
                 graphics.fillRect(paramInt3, paramInt4, 12, 12);
-                graphics.drawImage(CreateTiles(this.Q[51], ImageManipulation.ROTATE_270), paramInt3, paramInt4, 20);
+                graphics.drawImage(CreateTiles(this.Sprites[51], ImageManipulation.ROTATE_270), paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
             }
             case 45 -> {
                 graphics.fillRect(paramInt3, paramInt4, 12, 12);
-                graphics.drawImage(CreateTiles(this.Q[51], ImageManipulation.ROTATE_180), paramInt3, paramInt4, 20);
+                graphics.drawImage(CreateTiles(this.Sprites[51], ImageManipulation.ROTATE_180), paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
             }
             case 46 -> {
                 graphics.fillRect(paramInt3, paramInt4, 12, 12);
-                graphics.drawImage(CreateTiles(this.Q[51], ImageManipulation.ROTATE_90), paramInt3, paramInt4, 20);
+                graphics.drawImage(CreateTiles(this.Sprites[51], ImageManipulation.ROTATE_90), paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
             }
-            case 47 -> graphics.drawImage(this.Q[52], paramInt3, paramInt4, 20);
+            case 47 -> graphics.drawImage(this.Sprites[52], paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
             case 48 ->
-                    graphics.drawImage(CreateTiles(this.Q[52], ImageManipulation.ROTATE_270), paramInt3, paramInt4, 20);
+                    graphics.drawImage(CreateTiles(this.Sprites[52], ImageManipulation.ROTATE_270), paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
             case 49 ->
-                    graphics.drawImage(CreateTiles(this.Q[52], ImageManipulation.ROTATE_180), paramInt3, paramInt4, 20);
+                    graphics.drawImage(CreateTiles(this.Sprites[52], ImageManipulation.ROTATE_180), paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
             case 50 ->
-                    graphics.drawImage(CreateTiles(this.Q[52], ImageManipulation.ROTATE_90), paramInt3, paramInt4, 20);
-            case 38 -> graphics.drawImage(this.Q[53], paramInt3, paramInt4, 20);
-            case 51 -> graphics.drawImage(this.Q[54], paramInt3, paramInt4, 20);
+                    graphics.drawImage(CreateTiles(this.Sprites[52], ImageManipulation.ROTATE_90), paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
+            case 38 -> graphics.drawImage(this.Sprites[53], paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
+            case 51 -> graphics.drawImage(this.Sprites[54], paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
             case 52 ->
-                    graphics.drawImage(CreateTiles(this.Q[54], ImageManipulation.ROTATE_270), paramInt3, paramInt4, 20);
+                    graphics.drawImage(CreateTiles(this.Sprites[54], ImageManipulation.ROTATE_270), paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
             case 53 ->
-                    graphics.drawImage(CreateTiles(this.Q[54], ImageManipulation.ROTATE_180), paramInt3, paramInt4, 20);
+                    graphics.drawImage(CreateTiles(this.Sprites[54], ImageManipulation.ROTATE_180), paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
             case 54 ->
-                    graphics.drawImage(CreateTiles(this.Q[54], ImageManipulation.ROTATE_90), paramInt3, paramInt4, 20);
+                    graphics.drawImage(CreateTiles(this.Sprites[54], ImageManipulation.ROTATE_90), paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
         }
     }
 
@@ -499,7 +546,7 @@ public abstract class b extends FullCanvas {
                 if (i2 >= 13 && i2 <= 28) {
                     int i3 = (n - this.l) * 12 + paramInt4;
                     int i4 = (i1 - this.k) * 12;
-                    g.drawImage(this.Q[com.nokia.mid.appl.boun.d.b[i2 - 13]], i3, i4, 20);
+                    g.drawImage(this.Sprites[com.nokia.mid.appl.boun.d.b[i2 - 13]], i3, i4, Graphics.TOP | Graphics.LEFT);
                 }
             }
         }
@@ -574,23 +621,23 @@ public abstract class b extends FullCanvas {
         return this.l * 12 - this.v + 128;
     }
 
-    public Image CreateTiles(Image paramImage) {
+    public Image Mirror16x16Tile(Image paramImage) {
         Image image = DirectUtils.createImage(16, 16, 0);
         if (image == null)
             image = Image.createImage(16, 16);
         Graphics graphics = image.getGraphics();
         DirectGraphics directGraphics = DirectUtils.getDirectGraphics(graphics);
-        graphics.drawImage(paramImage, -4, -4, 20);
+        graphics.drawImage(paramImage, -4, -4, Graphics.TOP | Graphics.LEFT);
         directGraphics.drawImage(paramImage, 8, -4, Graphics.TOP | Graphics.LEFT, DirectGraphics.FLIP_HORIZONTAL);
         directGraphics.drawImage(paramImage, -4, 8, Graphics.TOP | Graphics.LEFT, DirectGraphics.FLIP_VERTICAL);
         directGraphics.drawImage(paramImage, 8, 8, Graphics.TOP | Graphics.LEFT, DirectGraphics.ROTATE_180);
         return image;
     }
 
-    public Image b(Image paramImage) {
+    public Image MirrorExitTile(Image paramImage) {
         Image image = Image.createImage(24, 48);
         Graphics graphics = image.getGraphics();
-        graphics.setColor(0xb0e0f0);
+        graphics.setColor(BounceColors.SKY);
         graphics.fillRect(0, 0, 24, 48);
         graphics.setColor(0xfc9d9e);
         graphics.fillRect(4, 0, 16, 48);
@@ -599,90 +646,90 @@ public abstract class b extends FullCanvas {
         graphics.setColor(0xc2848e);
         graphics.fillRect(10, 0, 4, 48);
         graphics.drawImage(paramImage, 0, 0, Graphics.TOP | Graphics.LEFT);
-        graphics.drawImage(CreateTiles(paramImage, ImageManipulation.FLIP_HORIZONTAL), 12, 0, 20);
-        graphics.drawImage(CreateTiles(paramImage, ImageManipulation.FLIP_VERTICAL), 0, 12, 20);
-        graphics.drawImage(CreateTiles(paramImage, ImageManipulation.FLIP_BOTH), 12, 12, 20);
+        graphics.drawImage(CreateTiles(paramImage, ImageManipulation.FLIP_HORIZONTAL), 12, 0, Graphics.TOP | Graphics.LEFT);
+        graphics.drawImage(CreateTiles(paramImage, ImageManipulation.FLIP_VERTICAL), 0, 12, Graphics.TOP | Graphics.LEFT);
+        graphics.drawImage(CreateTiles(paramImage, ImageManipulation.FLIP_BOTH), 12, 12, Graphics.TOP | Graphics.LEFT);
         return image;
     }
 
     public void LoadSpriteSheet() {
         Image ss = CreateTiles("/icons/objects_nm.png");
-        this.Q = new Image[67];
-        this.Q[0] = CreateTiles(ss, 1, 0);
-        this.Q[1] = CreateTiles(ss, 1, 2);
-        this.Q[2] = CreateTiles(ss, 0, 3, -5185296);
-        this.Q[3] = CreateTiles(this.Q[2], ImageManipulation.FLIP_VERTICAL);
-        this.Q[4] = CreateTiles(this.Q[2], ImageManipulation.ROTATE_90);
-        this.Q[5] = CreateTiles(this.Q[2], ImageManipulation.ROTATE_270);
-        this.Q[6] = CreateTiles(ss, 0, 3, -15703888);
-        this.Q[7] = CreateTiles(this.Q[6], ImageManipulation.FLIP_VERTICAL);
-        this.Q[8] = CreateTiles(this.Q[6], ImageManipulation.ROTATE_90);
-        this.Q[9] = CreateTiles(this.Q[6], ImageManipulation.ROTATE_270);
-        this.Q[10] = CreateTiles(ss, 0, 4);
-        this.Q[11] = CreateTiles(ss, 3, 4);
-        this.Q[12] = b(CreateTiles(ss, 2, 3));
-        this.Q[14] = CreateTiles(ss, 0, 5);
-        this.Q[13] = CreateTiles(this.Q[14], ImageManipulation.FLIP_VERTICAL);
-        this.Q[15] = CreateTiles(this.Q[13], ImageManipulation.FLIP_HORIZONTAL);
-        this.Q[16] = CreateTiles(this.Q[14], ImageManipulation.FLIP_HORIZONTAL);
-        this.Q[18] = CreateTiles(ss, 1, 5);
-        this.Q[17] = CreateTiles(this.Q[18], ImageManipulation.FLIP_VERTICAL);
-        this.Q[19] = CreateTiles(this.Q[17], ImageManipulation.FLIP_HORIZONTAL);
-        this.Q[20] = CreateTiles(this.Q[18], ImageManipulation.FLIP_HORIZONTAL);
-        this.Q[22] = CreateTiles(ss, 2, 5);
-        this.Q[21] = CreateTiles(this.Q[22], ImageManipulation.FLIP_VERTICAL);
-        this.Q[23] = CreateTiles(this.Q[21], ImageManipulation.FLIP_HORIZONTAL);
-        this.Q[24] = CreateTiles(this.Q[22], ImageManipulation.FLIP_HORIZONTAL);
-        this.Q[26] = CreateTiles(ss, 3, 5);
-        this.Q[25] = CreateTiles(this.Q[26], ImageManipulation.FLIP_VERTICAL);
-        this.Q[27] = CreateTiles(this.Q[25], ImageManipulation.FLIP_HORIZONTAL);
-        this.Q[28] = CreateTiles(this.Q[26], ImageManipulation.FLIP_HORIZONTAL);
-        this.Q[29] = CreateTiles(this.Q[14], ImageManipulation.ROTATE_270);
-        this.Q[30] = CreateTiles(this.Q[29], ImageManipulation.FLIP_VERTICAL);
-        this.Q[31] = CreateTiles(this.Q[29], ImageManipulation.FLIP_HORIZONTAL);
-        this.Q[32] = CreateTiles(this.Q[30], ImageManipulation.FLIP_HORIZONTAL);
-        this.Q[33] = CreateTiles(this.Q[18], ImageManipulation.ROTATE_270);
-        this.Q[34] = CreateTiles(this.Q[33], ImageManipulation.FLIP_VERTICAL);
-        this.Q[35] = CreateTiles(this.Q[33], ImageManipulation.FLIP_HORIZONTAL);
-        this.Q[36] = CreateTiles(this.Q[34], ImageManipulation.FLIP_HORIZONTAL);
-        this.Q[37] = CreateTiles(this.Q[22], ImageManipulation.ROTATE_270);
-        this.Q[38] = CreateTiles(this.Q[37], ImageManipulation.FLIP_VERTICAL);
-        this.Q[39] = CreateTiles(this.Q[37], ImageManipulation.FLIP_HORIZONTAL);
-        this.Q[40] = CreateTiles(this.Q[38], ImageManipulation.FLIP_HORIZONTAL);
-        this.Q[41] = CreateTiles(this.Q[26], ImageManipulation.ROTATE_270);
-        this.Q[42] = CreateTiles(this.Q[41], ImageManipulation.FLIP_VERTICAL);
-        this.Q[43] = CreateTiles(this.Q[41], ImageManipulation.FLIP_HORIZONTAL);
-        this.Q[44] = CreateTiles(this.Q[42], ImageManipulation.FLIP_HORIZONTAL);
-        this.Q[45] = CreateTiles(ss, 3, 3);
-        this.Q[46] = CreateTiles(ss, 1, 3);
-        this.Q[47] = CreateTiles(ss, 2, 0);
-        this.Q[48] = CreateTiles(ss, 0, 1);
-        this.Q[49] = CreateTiles(CreateTiles(ss, 3, 0));
-        this.Q[50] = CreateTiles(ss, 3, 1);
-        this.Q[51] = CreateTiles(ss, 2, 4);
-        this.Q[52] = CreateTiles(ss, 3, 2);
-        this.Q[53] = CreateTiles(ss, 1, 1);
-        this.Q[54] = CreateTiles(ss, 2, 2);
-        this.Q[55] = CreateTiles(ss, 0, 0, -5185296);
-        this.Q[56] = CreateTiles(this.Q[55], ImageManipulation.ROTATE_90);
-        this.Q[57] = CreateTiles(this.Q[55], ImageManipulation.ROTATE_180);
-        this.Q[58] = CreateTiles(this.Q[55], ImageManipulation.ROTATE_270);
-        this.Q[59] = CreateTiles(ss, 0, 0, -15703888);
-        this.Q[60] = CreateTiles(this.Q[59], ImageManipulation.ROTATE_90);
-        this.Q[61] = CreateTiles(this.Q[59], ImageManipulation.ROTATE_180);
-        this.Q[62] = CreateTiles(this.Q[59], ImageManipulation.ROTATE_270);
-        this.Q[63] = CreateTiles(ss, 0, 2);
-        this.Q[64] = CreateTiles(this.Q[63], ImageManipulation.ROTATE_90);
-        this.Q[65] = CreateTiles(this.Q[63], ImageManipulation.ROTATE_180);
-        this.Q[66] = CreateTiles(this.Q[63], ImageManipulation.ROTATE_270);
+        this.Sprites = new Image[67];
+        this.Sprites[SpriteIDs.BRICK_WALL] = CreateTiles(ss, 1, 0); // Brick wall
+        this.Sprites[SpriteIDs.RUBBER_WALL] = CreateTiles(ss, 1, 2); // Rubber wall
+        this.Sprites[SpriteIDs.SPIKES_UP] = CreateTiles(ss, 0, 3, BounceColors.SKY_ALPHA); // Spikes Up
+        this.Sprites[SpriteIDs.SPIKES_DOWN] = CreateTiles(this.Sprites[2], ImageManipulation.FLIP_VERTICAL); // Spikes Down
+        this.Sprites[SpriteIDs.SPIKES_LEFT] = CreateTiles(this.Sprites[2], ImageManipulation.ROTATE_90); // Spikes Left
+        this.Sprites[SpriteIDs.SPIKES_RIGHT] = CreateTiles(this.Sprites[2], ImageManipulation.ROTATE_270); // Spikes Right
+        this.Sprites[SpriteIDs.SPIKES_WATER_UP] = CreateTiles(ss, 0, 3, BounceColors.WATER_ALPHA);
+        this.Sprites[SpriteIDs.SPIKES_WATER_DOWN] = CreateTiles(this.Sprites[6], ImageManipulation.FLIP_VERTICAL);
+        this.Sprites[SpriteIDs.SPIKES_WATER_LEFT] = CreateTiles(this.Sprites[6], ImageManipulation.ROTATE_90);
+        this.Sprites[SpriteIDs.SPIKES_WATER_RIGHT] = CreateTiles(this.Sprites[6], ImageManipulation.ROTATE_270);
+        this.Sprites[SpriteIDs.CRYSTAL] = CreateTiles(ss, 0, 4);
+        this.Sprites[SpriteIDs.CRYSTAL_ACTIVE] = CreateTiles(ss, 3, 4);
+        this.Sprites[SpriteIDs.EXIT] = MirrorExitTile(CreateTiles(ss, 2, 3));
+        this.Sprites[14] = CreateTiles(ss, 0, 5);
+        this.Sprites[13] = CreateTiles(this.Sprites[14], ImageManipulation.FLIP_VERTICAL);
+        this.Sprites[15] = CreateTiles(this.Sprites[13], ImageManipulation.FLIP_HORIZONTAL);
+        this.Sprites[16] = CreateTiles(this.Sprites[14], ImageManipulation.FLIP_HORIZONTAL);
+        this.Sprites[18] = CreateTiles(ss, 1, 5);
+        this.Sprites[17] = CreateTiles(this.Sprites[18], ImageManipulation.FLIP_VERTICAL);
+        this.Sprites[19] = CreateTiles(this.Sprites[17], ImageManipulation.FLIP_HORIZONTAL);
+        this.Sprites[20] = CreateTiles(this.Sprites[18], ImageManipulation.FLIP_HORIZONTAL);
+        this.Sprites[22] = CreateTiles(ss, 2, 5);
+        this.Sprites[21] = CreateTiles(this.Sprites[22], ImageManipulation.FLIP_VERTICAL);
+        this.Sprites[23] = CreateTiles(this.Sprites[21], ImageManipulation.FLIP_HORIZONTAL);
+        this.Sprites[24] = CreateTiles(this.Sprites[22], ImageManipulation.FLIP_HORIZONTAL);
+        this.Sprites[26] = CreateTiles(ss, 3, 5);
+        this.Sprites[25] = CreateTiles(this.Sprites[26], ImageManipulation.FLIP_VERTICAL);
+        this.Sprites[27] = CreateTiles(this.Sprites[25], ImageManipulation.FLIP_HORIZONTAL);
+        this.Sprites[28] = CreateTiles(this.Sprites[26], ImageManipulation.FLIP_HORIZONTAL);
+        this.Sprites[29] = CreateTiles(this.Sprites[14], ImageManipulation.ROTATE_270);
+        this.Sprites[30] = CreateTiles(this.Sprites[29], ImageManipulation.FLIP_VERTICAL);
+        this.Sprites[31] = CreateTiles(this.Sprites[29], ImageManipulation.FLIP_HORIZONTAL);
+        this.Sprites[32] = CreateTiles(this.Sprites[30], ImageManipulation.FLIP_HORIZONTAL);
+        this.Sprites[33] = CreateTiles(this.Sprites[18], ImageManipulation.ROTATE_270);
+        this.Sprites[34] = CreateTiles(this.Sprites[33], ImageManipulation.FLIP_VERTICAL);
+        this.Sprites[35] = CreateTiles(this.Sprites[33], ImageManipulation.FLIP_HORIZONTAL);
+        this.Sprites[36] = CreateTiles(this.Sprites[34], ImageManipulation.FLIP_HORIZONTAL);
+        this.Sprites[37] = CreateTiles(this.Sprites[22], ImageManipulation.ROTATE_270);
+        this.Sprites[38] = CreateTiles(this.Sprites[37], ImageManipulation.FLIP_VERTICAL);
+        this.Sprites[39] = CreateTiles(this.Sprites[37], ImageManipulation.FLIP_HORIZONTAL);
+        this.Sprites[40] = CreateTiles(this.Sprites[38], ImageManipulation.FLIP_HORIZONTAL);
+        this.Sprites[41] = CreateTiles(this.Sprites[26], ImageManipulation.ROTATE_270);
+        this.Sprites[42] = CreateTiles(this.Sprites[41], ImageManipulation.FLIP_VERTICAL);
+        this.Sprites[43] = CreateTiles(this.Sprites[41], ImageManipulation.FLIP_HORIZONTAL);
+        this.Sprites[44] = CreateTiles(this.Sprites[42], ImageManipulation.FLIP_HORIZONTAL);
+        this.Sprites[45] = CreateTiles(ss, 3, 3);
+        this.Sprites[46] = CreateTiles(ss, 1, 3);
+        this.Sprites[SpriteIDs.BALL] = CreateTiles(ss, 2, 0);
+        this.Sprites[SpriteIDs.POPPED_BALL] = CreateTiles(ss, 0, 1);
+        this.Sprites[SpriteIDs.BIG_BALL] = Mirror16x16Tile(CreateTiles(ss, 3, 0));
+        this.Sprites[50] = CreateTiles(ss, 3, 1);
+        this.Sprites[51] = CreateTiles(ss, 2, 4);
+        this.Sprites[52] = CreateTiles(ss, 3, 2);
+        this.Sprites[53] = CreateTiles(ss, 1, 1);
+        this.Sprites[54] = CreateTiles(ss, 2, 2);
+        this.Sprites[55] = CreateTiles(ss, 0, 0, BounceColors.SKY_ALPHA);
+        this.Sprites[56] = CreateTiles(this.Sprites[55], ImageManipulation.ROTATE_90);
+        this.Sprites[57] = CreateTiles(this.Sprites[55], ImageManipulation.ROTATE_180);
+        this.Sprites[58] = CreateTiles(this.Sprites[55], ImageManipulation.ROTATE_270);
+        this.Sprites[59] = CreateTiles(ss, 0, 0, BounceColors.WATER_ALPHA);
+        this.Sprites[60] = CreateTiles(this.Sprites[59], ImageManipulation.ROTATE_90);
+        this.Sprites[61] = CreateTiles(this.Sprites[59], ImageManipulation.ROTATE_180);
+        this.Sprites[62] = CreateTiles(this.Sprites[59], ImageManipulation.ROTATE_270);
+        this.Sprites[63] = CreateTiles(ss, 0, 2);
+        this.Sprites[64] = CreateTiles(this.Sprites[63], ImageManipulation.ROTATE_90);
+        this.Sprites[65] = CreateTiles(this.Sprites[63], ImageManipulation.ROTATE_180);
+        this.Sprites[66] = CreateTiles(this.Sprites[63], ImageManipulation.ROTATE_270);
         this.imageBall = CreateTiles(ss, 2, 1);
-        this.imageRing = CreateTiles(ss, 1, 4);
+        this.imageHoop = CreateTiles(ss, 1, 4);
     }
 
     public void CreateTiles(f paramf) {
-        paramf.A = this.Q[47];
-        paramf.k = this.Q[48];
-        paramf.B = this.Q[49];
+        paramf.spriteBall = this.Sprites[SpriteIDs.BALL];
+        paramf.spritePoppedBall = this.Sprites[SpriteIDs.POPPED_BALL];
+        paramf.spriteBigBall = this.Sprites[SpriteIDs.BIG_BALL];
     }
 
     public static Image CreateTiles(Image paramImage, int tileX, int tileY) {
@@ -723,7 +770,7 @@ public abstract class b extends FullCanvas {
 
     public void p() {
         Graphics graphics = this.aa.getGraphics();
-        graphics.drawImage(this.o, 0, -this.b, 20);
+        graphics.drawImage(this.o, 0, -this.b, Graphics.TOP | Graphics.LEFT);
     }
 
     public void h() {
@@ -735,23 +782,23 @@ public abstract class b extends FullCanvas {
         p();
     }
 
-    public abstract void CreateTiles();
+    public abstract void Tick();
 
-    public synchronized void d() {
-        if (this.ab != null)
+    public synchronized void StartGameTimer() {
+        if (this.GameTimer != null)
             return;
-        this.ab = new BounceTimer(this, this);
+        this.GameTimer = new BounceTimer(this, this);
     }
 
-    public synchronized void j() {
-        if (this.ab == null)
+    public synchronized void StopGameTimer() {
+        if (this.GameTimer == null)
             return;
-        this.ab.stop();
-        this.ab = null;
+        this.GameTimer.stop();
+        this.GameTimer = null;
     }
 
-    protected void n() {
-        CreateTiles();
+    protected void GameTimerTick() {
+        Tick();
     }
 }
 

@@ -10,11 +10,11 @@ import java.io.IOException;
 import java.util.Objects;
 
 public class e extends b {
-    public int splashId;
+    public int SplashId;
 
-    public Image t;
+    public Image ImageSplash;
 
-    private int n;
+    private int splashTimer;
 
     public Sound soundUp;
 
@@ -26,7 +26,7 @@ public class e extends b {
 
     public f aq;
 
-    public int ringsScored;
+    public int HoopsScored;
 
     public int lives;
 
@@ -38,7 +38,7 @@ public class e extends b {
 
     public boolean e;
 
-    public boolean q;
+    public boolean TODO_ExitUnlocked;
 
     public boolean y;
 
@@ -69,32 +69,32 @@ public class e extends b {
         this.soundPickup = LoadSound("/sounds/pickup.ott");
         this.soundPop = LoadSound("/sounds/pop.ott");
         this.imageFullscreen = Image.createImage(128, 128);
-        this.splashId = 1;
+        this.SplashId = 1;
         try {
-            this.t = Image.createImage(SPLASHES[this.splashId]);
+            this.ImageSplash = Image.createImage(SPLASHES[this.SplashId]);
         } catch (IOException iOException) {
-            this.t = Image.createImage(1, 1);
+            this.ImageSplash = Image.createImage(1, 1);
         }
-        d();
+        StartGameTimer();
     }
 
     public void a(int level, int paramInt2, int paramInt3) {
         this.level = level;
-        this.ringsScored = 0;
+        this.HoopsScored = 0;
         this.lives = paramInt3;
         this.score = paramInt2;
         this.e = false;
-        this.q = false;
-        l();
+        this.TODO_ExitUnlocked = false;
+        InitializeGame();
         this.T = true;
     }
 
     public void a(int paramInt1, int paramInt2) {
-        this.level = this.game.B;
-        this.ringsScored = this.game.t;
-        this.lives = this.game.C;
-        this.score = this.game.G;
-        r();
+        this.level = this.game.RecordLevel;
+        this.HoopsScored = this.game.RecordHoopsScored;
+        this.lives = this.game.RecordLives;
+        this.score = this.game.RecordScore;
+        RunGarbageCollector();
         CreateTiles(this.level);
         k();
         AddScore();
@@ -112,10 +112,10 @@ public class e extends b {
         }
     }
 
-    private void l() {
-        r();
+    private void InitializeGame() {
+        RunGarbageCollector();
         CreateTiles(this.level);
-        this.ringsScored = 0;
+        this.HoopsScored = 0;
         this.p = 120;
         this.y = true;
         a(this.s * 12 + 6, this.S * 12 + 6, this.BallSize, 0, 0);
@@ -172,12 +172,12 @@ public class e extends b {
         CreateTiles(this.X, this.aq.s, this.aq.r, this.aq.p, this.v);
         this.X.setClip(0, 0, 128, 128);
         if (this.y) {
-            this.X.setColor(545706);
+            this.X.setColor(0x0853aa);
             this.X.fillRect(0, 97, 128, 32);
             for (byte b1 = 0; b1 < this.lives; b1++)
                 this.X.drawImage(this.imageBall, 5 + b1 * (this.imageBall.getWidth() - 1), 99, Graphics.TOP | Graphics.LEFT);
-            for (byte b2 = 0; b2 < this.ringsTotal - this.ringsScored; b2++)
-                this.X.drawImage(this.imageRing, 5 + b2 * (this.imageRing.getWidth() - 4), 112, Graphics.TOP | Graphics.LEFT);
+            for (byte b2 = 0; b2 < this.HoopsTotal - this.HoopsScored; b2++)
+                this.X.drawImage(this.imageHoop, 5 + b2 * (this.imageHoop.getWidth() - 4), 112, Graphics.TOP | Graphics.LEFT);
             this.X.setColor(0xfffffe);
             this.X.setFont(this.font);
             this.X.drawString(PadZeroes(this.score), 64, 100, Graphics.TOP | Graphics.LEFT);
@@ -190,11 +190,11 @@ public class e extends b {
     }
 
     public void paint(Graphics paramGraphics) {
-        if (this.splashId != -1) {
-            if (this.t != null) {
+        if (this.SplashId != -1) {
+            if (this.ImageSplash != null) {
                 paramGraphics.setColor(0x000000);
                 paramGraphics.fillRect(0, 0, this.displayWidth, this.displayHeight);
-                paramGraphics.drawImage(this.t, this.displayWidth >> 1, this.displayHeight >> 1, Graphics.HCENTER | Graphics.VCENTER);
+                paramGraphics.drawImage(this.ImageSplash, this.displayWidth >> 1, this.displayHeight >> 1, Graphics.HCENTER | Graphics.VCENTER);
             }
         } else {
             paramGraphics.drawImage(this.imageFullscreen, 0, 0, 20);
@@ -212,50 +212,52 @@ public class e extends b {
         int i = this.aq.s - this.l * 12;
         int j = this.aq.r - this.k * 12;
         if (this.aq.z == 2) {
-            paramGraphics.drawImage(this.aq.k, i - 6 + paramInt, j - 6, 20);
+            paramGraphics.drawImage(this.aq.spritePoppedBall, i - 6 + paramInt, j - 6, 20);
         } else {
             paramGraphics.drawImage(this.aq.i, i - this.aq.p + paramInt, j - this.aq.p, 20);
         }
     }
 
-    public void CreateTiles() {
+    public void Tick() {
         if (this.d) {
-            l();
+            InitializeGame();
             repaint();
             return;
         }
-        if (this.splashId != -1) {
-            if (this.t == null || this.t == null) {
+        if (this.SplashId != -1) {
+            if (this.ImageSplash == null/* || this.t == null*/) { // TODO: this is what I got from JD-GUI. I wonder why...
                 this.H = false;
-                this.game.f();
-            } else if (this.n > 30) {
-                this.t = null;
+                this.game.ShowMainMenu();
+            } else if (this.splashTimer > 30) {
+                this.ImageSplash = null;
                 Runtime.getRuntime().gc();
-                switch (this.splashId) {
-                    case 0:
-                        this.splashId = 1;
+                switch (this.SplashId) {
+                    case 0: // Switch to the next splash
+                        this.SplashId = 1;
                         try {
-                            this.t = Image.createImage(SPLASHES[this.splashId]);
+                            this.ImageSplash = Image.createImage(SPLASHES[this.SplashId]);
                         } catch (IOException iOException) {
-                            this.t = Image.createImage(1, 1);
+                            this.ImageSplash = Image.createImage(1, 1);
                         }
                         repaint();
                         break;
-                    case 1:
-                        this.splashId = -1;
+                    case 1: // Open the main menu
+                        this.SplashId = -1;
                         this.H = false;
-                        this.game.f();
+                        this.game.ShowMainMenu();
                         break;
                 }
-                this.n = 0;
+                this.splashTimer = 0;
             } else {
-                this.n++;
+                this.splashTimer++;
             }
             repaint();
             return;
         }
+
         if (this.p != 0)
             this.p--;
+
         synchronized (this.aq) {
             if (this.aq.r - 6 < this.k * 12 || this.aq.r + 6 > this.k * 12 + 96) {
                 e();
@@ -265,8 +267,8 @@ public class e extends b {
             if (this.aq.z == 1) {
                 if (this.lives < 0) {
                     this.game.WriteToStore();
-                    j();
-                    this.game.ShowInstructions(false);
+                    StopGameTimer();
+                    this.game.TODO_ShowInstructions(false);
                     return;
                 }
                 int i = this.aq.d;
@@ -279,12 +281,12 @@ public class e extends b {
             }
             if (this.B != 0)
                 o();
-            if (this.ringsScored == this.ringsTotal)
-                this.q = true;
-            if (this.q && this.z && (this.W + 1) * 12 > m() && this.W * 12 < g()) {
+            if (this.HoopsScored == this.HoopsTotal)
+                this.TODO_ExitUnlocked = true;
+            if (this.TODO_ExitUnlocked && this.z && (this.W + 1) * 12 > m() && this.W * 12 < g()) {
                 if (this.M) {
                     this.z = false;
-                    this.q = false;
+                    this.TODO_ExitUnlocked = false;
                 } else {
                     h();
                 }
@@ -310,24 +312,24 @@ public class e extends b {
         repaint();
         if (this.e) {
             this.e = false;
-            this.q = false;
+            this.TODO_ExitUnlocked = false;
             this.d = true;
-            this.level = 1 + this.level;
+            this.level++;
             AddScore(5000);
             this.game.WriteToStore();
             if (this.level > 11) {
-                this.game.ShowInstructions(true);
+                this.game.TODO_ShowInstructions(true);
             } else {
                 this.H = false;
-                this.game.d();
+                this.game.ShowLevelComplete();
                 repaint();
             }
         }
     }
 
     public void keyPressed(int paramInt) {
-        if (this.splashId != -1) {
-            this.n = 31;
+        if (this.SplashId != -1) { // Skip the splash screen
+            this.splashTimer = 31;
             return;
         }
         if (this.aq == null)
@@ -384,7 +386,7 @@ public class e extends b {
                 case -7:
                 case -6:
                     this.H = false;
-                    this.game.f();
+                    this.game.ShowMainMenu();
                     break;
                 default:
                     switch (getGameAction(paramInt)) {
@@ -451,18 +453,18 @@ public class e extends b {
         return str + number;
     }
 
-    protected Sound LoadSound(String paramString) {
-        byte[] arrayOfByte = new byte[100];
+    protected Sound LoadSound(String path) {
+        byte[] buffer = new byte[100];
         Sound sound = null;
-        DataInputStream dataInputStream = new DataInputStream(Objects.requireNonNull(getClass().getResourceAsStream(paramString)));
+        DataInputStream dataInputStream = new DataInputStream(Objects.requireNonNull(getClass().getResourceAsStream(path)));
         try {
-            int i = dataInputStream.read(arrayOfByte);
+            int i = dataInputStream.read(buffer);
             dataInputStream.close();
-            byte[] arrayOfByte1 = new byte[i];
-            System.arraycopy(arrayOfByte, 0, arrayOfByte1, 0, i);
-            sound = new Sound(arrayOfByte1, 1);
+            byte[] bufferExactSize = new byte[i];
+            System.arraycopy(buffer, 0, bufferExactSize, 0, i);
+            sound = new Sound(bufferExactSize, Sound.FORMAT_TONE);
         } catch (IOException iOException) {
-            sound = new Sound(1000, 500L);
+            sound = new Sound(1000, 500L); // Fallback, play a 1000Hz tone 3 times
             sound.play(3);
         }
         return sound;
@@ -472,7 +474,7 @@ public class e extends b {
         if (this.H) {
             if (this.aq != null)
                 this.aq.a();
-            this.game.f();
+            this.game.ShowMainMenu();
         }
         this.H = true;
     }
@@ -494,43 +496,42 @@ public class e extends b {
             for (byte b2 = 0; b2 < this.c; b2++) {
                 byte b3 = (byte) (this.C[b1][b2] & 0xFF7F & 0xFFFFFFBF);
                 switch (b3) {
-                    case 7:
-                    case 29:
+                    case 7, 29 -> {
                         if (a(b1, b2, b3))
                             this.C[b1][b2] = (short) (0x0 | this.C[b1][b2] & 0x40);
-                        break;
-                    case 13:
+                    }
+                    case 13 -> {
                         if (a(b1, b2, b3))
                             this.C[b1][b2] = (short) (0x11 | this.C[b1][b2] & 0x40);
-                        break;
-                    case 14:
+                    }
+                    case 14 -> {
                         if (a(b1, b2, b3))
                             this.C[b1][b2] = (short) (0x12 | this.C[b1][b2] & 0x40);
-                        break;
-                    case 21:
+                    }
+                    case 21 -> {
                         if (a(b1, b2, b3))
                             this.C[b1][b2] = (short) (0x19 | this.C[b1][b2] & 0x40);
-                        break;
-                    case 22:
+                    }
+                    case 22 -> {
                         if (a(b1, b2, b3))
                             this.C[b1][b2] = (short) (0x1A | this.C[b1][b2] & 0x40);
-                        break;
-                    case 15:
+                    }
+                    case 15 -> {
                         if (a(b1, b2, b3))
                             this.C[b1][b2] = (short) (0x13 | this.C[b1][b2] & 0x40);
-                        break;
-                    case 16:
+                    }
+                    case 16 -> {
                         if (a(b1, b2, b3))
                             this.C[b1][b2] = (short) (0x14 | this.C[b1][b2] & 0x40);
-                        break;
-                    case 23:
+                    }
+                    case 23 -> {
                         if (a(b1, b2, b3))
                             this.C[b1][b2] = (short) (0x1B | this.C[b1][b2] & 0x40);
-                        break;
-                    case 24:
+                    }
+                    case 24 -> {
                         if (a(b1, b2, b3))
                             this.C[b1][b2] = (short) (0x1C | this.C[b1][b2] & 0x40);
-                        break;
+                    }
                 }
             }
         }

@@ -45,107 +45,64 @@ public class f {
 
     public int C;
 
-    public static final byte[][] f = new byte[][]{
-            {
-                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                    0, 1}, {
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            1, 1}, {
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-            1, 1}, {
-            0, 0, 0, 0, 0, 0, 0, 0, 1, 1,
-            1, 1}, {
-            0, 0, 0, 0, 0, 0, 0, 1, 1, 1,
-            1, 1}, {
-            0, 0, 0, 0, 0, 0, 1, 1, 1, 1,
-            1, 1}, {
-            0, 0, 0, 0, 0, 1, 1, 1, 1, 1,
-            1, 1}, {
-            0, 0, 0, 0, 1, 1, 1, 1, 1, 1,
-            1, 1}, {
-            0, 0, 0, 1, 1, 1, 1, 1, 1, 1,
-            1, 1}, {
-            0, 0, 1, 1, 1, 1, 1, 1, 1, 1,
-            1, 1},
-            {
-                    0, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-                    1, 1}, {
-            1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-            1, 1}};
+    public static final byte[][] SLOPE_COLLISION = new byte[][] {
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1},
+            {0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1},
+            {0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1},
+            {0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1},
+            {0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1},
+            {0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1},
+            {0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+            {0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+            {0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+            {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
+    };
 
-    public static final byte[][] e = new byte[][]{
-            {
-                    0, 0, 0, 0, 1, 1, 1, 1, 0, 0,
-                    0, 0}, {
-            0, 0, 1, 1, 1, 1, 1, 1, 1, 1,
-            0, 0}, {
-            0, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-            1, 0}, {
-            0, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-            1, 0}, {
-            1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-            1, 1}, {
-            1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-            1, 1}, {
-            1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-            1, 1}, {
-            1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-            1, 1}, {
-            0, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-            1, 0}, {
-            0, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-            1, 0},
-            {
-                    0, 0, 1, 1, 1, 1, 1, 1, 1, 1,
-                    0, 0}, {
-            0, 0, 0, 0, 1, 1, 1, 1, 0, 0,
-            0, 0}};
+    public static final byte[][] BALL_COLLISION = new byte[][] {
+            {0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0},
+            {0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0},
+            {0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
+            {0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
+            {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+            {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+            {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+            {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+            {0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
+            {0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
+            {0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0},
+            {0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0}
+    };
 
-    public static final byte[][] x = new byte[][]{
-            {
-                    0, 0, 0, 0, 0, 1, 1, 1, 1, 1,
-                    1, 0, 0, 0, 0, 0}, {
-            0, 0, 0, 1, 1, 1, 1, 1, 1, 1,
-            1, 1, 1, 0, 0, 0}, {
-            0, 0, 1, 1, 1, 1, 1, 1, 1, 1,
-            1, 1, 1, 1, 0, 0}, {
-            0, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-            1, 1, 1, 1, 1, 0}, {
-            0, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-            1, 1, 1, 1, 1, 0}, {
-            1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-            1, 1, 1, 1, 1, 1}, {
-            1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-            1, 1, 1, 1, 1, 1}, {
-            1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-            1, 1, 1, 1, 1, 1}, {
-            1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-            1, 1, 1, 1, 1, 1}, {
-            1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-            1, 1, 1, 1, 1, 1},
-            {
-                    1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-                    1, 1, 1, 1, 1, 1}, {
-            0, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-            1, 1, 1, 1, 1, 0}, {
-            0, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-            1, 1, 1, 1, 1, 0}, {
-            0, 0, 1, 1, 1, 1, 1, 1, 1, 1,
-            1, 1, 1, 1, 0, 0}, {
-            0, 0, 0, 1, 1, 1, 1, 1, 1, 1,
-            1, 1, 1, 0, 0, 0}, {
-            0, 0, 0, 0, 0, 1, 1, 1, 1, 1,
-            1, 0, 0, 0, 0, 0}};
+    public static final byte[][] BIG_BALL_COLLISION = new byte[][] {
+            {0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0},
+            {0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0},
+            {0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0},
+            {0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
+            {0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
+            {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+            {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+            {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+            {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+            {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+            {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+            {0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
+            {0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
+            {0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0},
+            {0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0},
+            {0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0}
+    };
 
     public e n;
 
     public Image i;
 
-    public Image k;
+    public Image spritePoppedBall;
 
-    public Image B;
+    public Image spriteBigBall;
 
-    public Image A;
+    public Image spriteBall;
 
     private int q;
 
@@ -211,7 +168,7 @@ public class f {
     public void f() {
         this.a = 16;
         this.p = 8;
-        this.i = this.B;
+        this.i = this.spriteBigBall;
         boolean bool = false;
         for (byte b = 1; !bool; b++) {
             bool = true;
@@ -250,7 +207,7 @@ public class f {
     public void c() {
         this.a = 12;
         this.p = 6;
-        this.i = this.A;
+        this.i = this.spriteBall;
     }
 
     public void KillBall() {
@@ -266,47 +223,47 @@ public class f {
         }
     }
 
-    public void d() {
+    public void OnTouchHoop() {
         this.n.AddScore(500);
-        this.n.ringsScored++;
+        this.n.HoopsScored++;
         this.n.y = true;
     }
 
     public void b(int paramInt) {
         int i = this.l;
         switch (paramInt) {
-            case 35:
+            case 35 -> {
                 this.l = (this.l > -this.o) ? this.l : this.o;
                 this.o = i;
-                break;
-            case 37:
+            }
+            case 37 -> {
                 this.l = (-this.l > this.o) ? this.l : this.o;
                 this.o = i;
-                break;
-            case 34:
+            }
+            case 34 -> {
                 this.l = (this.l < this.o) ? this.l : -this.o;
                 this.o = -i;
-                break;
-            case 36:
+            }
+            case 36 -> {
                 this.l = (this.l > this.o) ? this.l : -this.o;
                 this.o = -i;
-                break;
-            case 31:
+            }
+            case 31 -> {
                 this.l = (this.l > -this.o) ? this.l : (this.o >> 1);
                 this.o = i;
-                break;
-            case 33:
+            }
+            case 33 -> {
                 this.l = (-this.l > this.o) ? this.l : (this.o >> 1);
                 this.o = i;
-                break;
-            case 30:
+            }
+            case 30 -> {
                 this.l = (this.l < this.o) ? this.l : -(this.o >> 1);
                 this.o = -i;
-                break;
-            case 32:
+            }
+            case 32 -> {
                 this.l = (this.l > this.o) ? this.l : -(this.o >> 1);
                 this.o = -i;
-                break;
+            }
         }
     }
 
@@ -315,7 +272,7 @@ public class f {
         int n;
         byte b2;
         int i1;
-        byte[][] arrayOfByte;
+        byte[][] ballCollision;
         int i = paramInt4 * 12;
         int j = paramInt3 * 12;
         int k = paramInt1 - this.p - i;
@@ -335,9 +292,9 @@ public class f {
             i1 = this.a + m;
         }
         if (this.a == 16) {
-            arrayOfByte = x;
+            ballCollision = BIG_BALL_COLLISION;
         } else {
-            arrayOfByte = e;
+            ballCollision = BALL_COLLISION;
         }
         if (n > 12)
             n = 12;
@@ -345,7 +302,7 @@ public class f {
             i1 = 12;
         for (byte b3 = b1; b3 < n; b3++) {
             for (byte b = b2; b < i1; b++) {
-                if (arrayOfByte[b - m][b3 - k] != 0)
+                if (ballCollision[b - m][b3 - k] != 0)
                     return true;
             }
         }
@@ -357,7 +314,7 @@ public class f {
         int n;
         byte b4;
         int i1;
-        byte[][] arrayOfByte;
+        byte[][] ballCollision;
         int i = paramInt4 * 12;
         int j = paramInt3 * 12;
         int k = paramInt1 - this.p - i;
@@ -387,9 +344,9 @@ public class f {
             i1 = this.a + m;
         }
         if (this.a == 16) {
-            arrayOfByte = x;
+            ballCollision = BIG_BALL_COLLISION;
         } else {
-            arrayOfByte = e;
+            ballCollision = BALL_COLLISION;
         }
         if (n > 12)
             n = 12;
@@ -397,7 +354,7 @@ public class f {
             i1 = 12;
         for (byte b5 = b3; b5 < n; b5++) {
             for (byte b = b4; b < i1; b++) {
-                if ((f[Math.abs(b - b2)][Math.abs(b5 - b1)] & arrayOfByte[b - m][b5 - k]) != 0) {
+                if ((SLOPE_COLLISION[Math.abs(b - b2)][Math.abs(b5 - b1)] & ballCollision[b - m][b5 - k]) != 0) {
                     if (!this.m)
                         b(paramInt5);
                     return true;
@@ -531,7 +488,7 @@ public class f {
                         bool = false;
                         break;
                     }
-                    d();
+                    OnTouchHoop();
                     this.n.C[paramInt3][paramInt4] = (short) (0x9B | i);
                     this.n.C[paramInt3][paramInt4 + 1] = (short) (0x9C | i);
                     sound = this.n.soundUp;
@@ -545,7 +502,7 @@ public class f {
                     }
                     if (a(paramInt1, paramInt2, paramInt3, paramInt4, j))
                         bool = false;
-                    d();
+                    OnTouchHoop();
                     this.n.C[paramInt3][paramInt4] = (short) (0x93 | i);
                     this.n.C[paramInt3][paramInt4 + 1] = (short) (0x94 | i);
                     sound = this.n.soundUp;
@@ -555,7 +512,7 @@ public class f {
                 if (b(paramInt1, paramInt2, paramInt3, paramInt4, j)) {
                     if (a(paramInt1, paramInt2, paramInt3, paramInt4, j))
                         bool = false;
-                    d();
+                    OnTouchHoop();
                     this.n.C[paramInt3][paramInt4] = (short) (0x9C | i);
                     this.n.C[paramInt3][paramInt4 - 1] = (short) (0x9B | i);
                     sound = this.n.soundUp;
@@ -569,7 +526,7 @@ public class f {
                     }
                     if (a(paramInt1, paramInt2, paramInt3, paramInt4, j))
                         bool = false;
-                    d();
+                    OnTouchHoop();
                     this.n.C[paramInt3][paramInt4] = (short) (0x94 | i);
                     this.n.C[paramInt3][paramInt4 - 1] = (short) (0x93 | i);
                     sound = this.n.soundUp;
@@ -579,7 +536,7 @@ public class f {
                 if (b(paramInt1, paramInt2, paramInt3, paramInt4, j)) {
                     if (a(paramInt1, paramInt2, paramInt3, paramInt4, j))
                         bool = false;
-                    d();
+                    OnTouchHoop();
                     this.n.C[paramInt3][paramInt4] = (short) (0x99 | i);
                     this.n.C[paramInt3 + 1][paramInt4] = (short) (0x9A | i);
                     sound = this.n.soundUp;
@@ -593,7 +550,7 @@ public class f {
                     }
                     if (a(paramInt1, paramInt2, paramInt3, paramInt4, j))
                         bool = false;
-                    d();
+                    OnTouchHoop();
                     this.n.C[paramInt3][paramInt4] = (short) (0x91 | i);
                     this.n.C[paramInt3 + 1][paramInt4] = (short) (0x92 | i);
                     sound = this.n.soundUp;
@@ -601,7 +558,7 @@ public class f {
             }
             case 22 -> {
                 if (b(paramInt1, paramInt2, paramInt3, paramInt4, j)) {
-                    d();
+                    OnTouchHoop();
                     this.n.C[paramInt3][paramInt4] = (short) (0x9A | i);
                     this.n.C[paramInt3 - 1][paramInt4] = (short) (0x99 | i);
                     sound = this.n.soundUp;
@@ -613,7 +570,7 @@ public class f {
                         bool = false;
                         break;
                     }
-                    d();
+                    OnTouchHoop();
                     this.n.C[paramInt3][paramInt4] = (short) (0x92 | i);
                     this.n.C[paramInt3 - 1][paramInt4] = (short) (0x91 | i);
                     sound = this.n.soundUp;
@@ -647,7 +604,7 @@ public class f {
                     bool = false;
                 }
             }
-            case 29 -> {
+            case 29 -> { // Power up
                 this.n.AddScore(1000);
                 if (this.n.lives < 5) {
                     this.n.lives++;

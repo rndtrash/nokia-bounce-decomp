@@ -14,11 +14,11 @@ public class BounceTimer extends TimerTask {
         this.b = paramb1;
         this.a = paramb2;
         this.timer = new Timer();
-        this.timer.schedule(this, 0L, 40L);
+        this.timer.schedule(this, 0L, 40L); // ~25 Ticks per second
     }
 
     public void run() {
-        this.a.n();
+        this.a.GameTimerTick();
     }
 
     void stop() {

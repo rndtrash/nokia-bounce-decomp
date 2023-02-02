@@ -8,6 +8,8 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 
 public class BounceGame implements CommandListener {
+    static final long RECORD_STORE_MAGIC = -559038737L;
+
     public Bounce s;
 
     public Display display;
@@ -26,15 +28,15 @@ public class BounceGame implements CommandListener {
 
     public byte J = 0;
 
-    public byte C;
+    public byte RecordLives;
 
-    public byte t;
+    public byte RecordHoopsScored;
 
-    public byte B;
+    public byte RecordLevel;
 
     public byte A;
 
-    public int G;
+    public int RecordScore;
 
     public int I;
 
@@ -68,7 +70,7 @@ public class BounceGame implements CommandListener {
 
     public short[][] l;
 
-    public long o;
+    public long LastRecordTimestampMillis;
 
     private Command i;
 
@@ -76,7 +78,7 @@ public class BounceGame implements CommandListener {
 
     private Command commandExit;
 
-    private Command L;
+    private Command commandContinue;
 
     private List c;
 
@@ -92,7 +94,7 @@ public class BounceGame implements CommandListener {
         this.s = paramBounce;
         LoadRecords();
         this.v = new e(this, 1);
-        this.v.d();
+        this.v.StartGameTimer();
         this.display = Display.getDisplay(this.s);
         this.display.setCurrent(this.v);
         LoadMenuStrings();
@@ -105,7 +107,7 @@ public class BounceGame implements CommandListener {
         this.menuStrings[3] = Translation.sprintf_translated(Translation.INSTRUCTIONS);
     }
 
-    public synchronized void f() {
+    public synchronized void ShowMainMenu() {
         this.c = new List(Translation.sprintf_translated(Translation.BOUNCE), List.IMPLICIT);
         if (this.commandBack == null) {
             this.commandBack = new Command(Translation.sprintf_translated(Translation.BACK), Command.BACK, 1);
@@ -117,16 +119,16 @@ public class BounceGame implements CommandListener {
             this.c.append(this.menuStrings[b], null);
         this.c.addCommand(this.commandExit);
         this.c.setCommandListener(this);
-        if (this.v.splashId != -1) {
-            this.v.splashId = -1;
-            this.v.t = null;
+        if (this.v.SplashId != -1) {
+            this.v.SplashId = -1;
+            this.v.ImageSplash = null;
         }
         if (this.K == 1 || this.J == 1 || this.J == 2) {
             this.c.setSelectedIndex(0, true);
         } else {
             this.c.setSelectedIndex(this.N, true);
         }
-        this.v.j();
+        this.v.StopGameTimer();
         this.display.setCurrent(this.c);
     }
 
@@ -148,7 +150,7 @@ public class BounceGame implements CommandListener {
             this.q = false;
             this.v.a(paramInt, 0, 3);
         }
-        this.v.d();
+        this.v.StartGameTimer();
         this.v.aq.a();
         this.display.setCurrent(this.v);
         this.K = 1;
@@ -173,7 +175,7 @@ public class BounceGame implements CommandListener {
     }
 
     public void ShowGameEnd(boolean won) {
-        this.v.j();
+        this.v.StopGameTimer();
         if (this.i == null)
             this.i = new Command(Translation.sprintf_translated(Translation.OK), Command.OK, 1);
         this.form = new Form(Translation.sprintf_translated(Translation.GAME_OVER));
@@ -194,17 +196,17 @@ public class BounceGame implements CommandListener {
         this.form = null;
     }
 
-    public void d() {
-        this.v.j();
+    public void ShowLevelComplete() {
+        this.v.StopGameTimer();
         a(false, 0);
         this.K = 5;
-        if (this.L == null)
-            this.L = new Command(Translation.sprintf_translated(Translation.CONTINUE), Command.OK, 1);
+        if (this.commandContinue == null)
+            this.commandContinue = new Command(Translation.sprintf_translated(Translation.CONTINUE), Command.OK, 1);
         this.form = new Form("");
         this.form.append(this.v.LevelCompletedString);
         this.form.append("\n\n");
         this.form.append("" + this.E + "\n");
-        this.form.addCommand(this.L);
+        this.form.addCommand(this.commandContinue);
         this.form.setCommandListener(this);
         this.display.setCurrent(this.form);
         this.form = null;
@@ -225,10 +227,10 @@ public class BounceGame implements CommandListener {
                         if (this.J == 1) {
                             this.v.a(this.y, this.M);
                         } else {
-                            this.v.a(this.B, this.G, this.C);
+                            this.v.a(this.RecordLevel, this.RecordScore, this.RecordLives);
                         }
                         this.u = null;
-                        this.v.d();
+                        this.v.StartGameTimer();
                         this.K = 1;
                     }
                 } else if (str.equals(this.menuStrings[1])) {
@@ -256,74 +258,74 @@ public class BounceGame implements CommandListener {
                 this.s.destroyApp(true);
                 this.s.notifyDestroyed();
             } else {
-                f();
+                ShowMainMenu();
             }
-        } else if (cmd == this.L) {
+        } else if (cmd == this.commandContinue) {
             this.K = 1;
             this.display.setCurrent(this.v);
         }
     }
 
     public void LoadRecords() {
-        byte[] arrayOfByte1 = new byte[1];
-        byte[] arrayOfByte2 = new byte[4];
+        byte[] maxLevelsArray = new byte[1];
+        byte[] highScoreArray = new byte[4];
         byte[] arrayOfByte3 = new byte[255];
         Object object = null;
         try {
             RecordStore recordStore = RecordStore.openRecordStore("bounceRMS", true);
             if (recordStore.getNumRecords() != 3) {
-                recordStore.addRecord(arrayOfByte1, 0, arrayOfByte1.length);
-                recordStore.addRecord(arrayOfByte2, 0, arrayOfByte2.length);
+                recordStore.addRecord(maxLevelsArray, 0, maxLevelsArray.length);
+                recordStore.addRecord(highScoreArray, 0, highScoreArray.length);
                 recordStore.addRecord(arrayOfByte3, 0, arrayOfByte3.length);
             } else {
-                arrayOfByte1 = recordStore.getRecord(1);
-                arrayOfByte2 = recordStore.getRecord(2);
+                maxLevelsArray = recordStore.getRecord(1);
+                highScoreArray = recordStore.getRecord(2);
                 arrayOfByte3 = recordStore.getRecord(3);
-                ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(arrayOfByte1);
-                DataInputStream dataInputStream = new DataInputStream(byteArrayInputStream);
-                this.MaxLevels = dataInputStream.readByte();
-                byteArrayInputStream = new ByteArrayInputStream(arrayOfByte2);
-                dataInputStream = new DataInputStream(byteArrayInputStream);
-                this.HighScore = dataInputStream.readInt();
-                byteArrayInputStream = new ByteArrayInputStream(arrayOfByte3);
-                dataInputStream = new DataInputStream(byteArrayInputStream);
-                this.o = dataInputStream.readLong();
-                this.J = dataInputStream.readByte();
-                this.C = dataInputStream.readByte();
-                this.t = dataInputStream.readByte();
-                this.B = dataInputStream.readByte();
-                this.A = dataInputStream.readByte();
-                this.G = dataInputStream.readInt();
-                this.I = dataInputStream.readInt();
-                this.H = dataInputStream.readInt();
-                this.y = dataInputStream.readInt();
-                this.M = dataInputStream.readInt();
-                this.a = dataInputStream.readInt();
-                this.g = dataInputStream.readInt();
-                dataInputStream.readInt();
-                dataInputStream.readInt();
-                this.e = dataInputStream.readInt();
-                this.b = dataInputStream.readInt();
-                this.w = dataInputStream.readInt();
-                this.z = dataInputStream.readInt();
-                this.n = dataInputStream.readInt();
-                this.p = dataInputStream.readByte();
+                ByteArrayInputStream recordBAIS = new ByteArrayInputStream(maxLevelsArray);
+                DataInputStream recordDIS = new DataInputStream(recordBAIS);
+                this.MaxLevels = recordDIS.readByte();
+                recordBAIS = new ByteArrayInputStream(highScoreArray);
+                recordDIS = new DataInputStream(recordBAIS);
+                this.HighScore = recordDIS.readInt();
+                recordBAIS = new ByteArrayInputStream(arrayOfByte3);
+                recordDIS = new DataInputStream(recordBAIS);
+                this.LastRecordTimestampMillis = recordDIS.readLong();
+                this.J = recordDIS.readByte();
+                this.RecordLives = recordDIS.readByte();
+                this.RecordHoopsScored = recordDIS.readByte();
+                this.RecordLevel = recordDIS.readByte();
+                this.A = recordDIS.readByte();
+                this.RecordScore = recordDIS.readInt();
+                this.I = recordDIS.readInt();
+                this.H = recordDIS.readInt();
+                this.y = recordDIS.readInt();
+                this.M = recordDIS.readInt();
+                this.a = recordDIS.readInt();
+                this.g = recordDIS.readInt();
+                recordDIS.readInt();
+                recordDIS.readInt();
+                this.e = recordDIS.readInt();
+                this.b = recordDIS.readInt();
+                this.w = recordDIS.readInt();
+                this.z = recordDIS.readInt();
+                this.n = recordDIS.readInt();
+                this.p = recordDIS.readByte();
                 this.u = new int[this.p][3];
                 for (byte b1 = 0; b1 < this.p; b1++) {
-                    this.u[b1][0] = dataInputStream.readShort();
-                    this.u[b1][1] = dataInputStream.readShort();
-                    this.u[b1][2] = dataInputStream.readByte();
+                    this.u[b1][0] = recordDIS.readShort();
+                    this.u[b1][1] = recordDIS.readShort();
+                    this.u[b1][2] = recordDIS.readByte();
                 }
-                this.r = dataInputStream.readByte();
+                this.r = recordDIS.readByte();
                 this.D = new short[this.r][2];
                 this.l = new short[this.r][2];
                 for (byte b2 = 0; b2 < this.r; b2++) {
-                    this.D[b2][0] = dataInputStream.readShort();
-                    this.D[b2][1] = dataInputStream.readShort();
-                    this.l[b2][0] = dataInputStream.readShort();
-                    this.l[b2][1] = dataInputStream.readShort();
+                    this.D[b2][0] = recordDIS.readShort();
+                    this.D[b2][1] = recordDIS.readShort();
+                    this.l[b2][0] = recordDIS.readShort();
+                    this.l[b2][1] = recordDIS.readShort();
                 }
-                if (dataInputStream.readLong() != -559038737L)
+                if (recordDIS.readLong() != RECORD_STORE_MAGIC)
                     this.J = 0;
             }
             recordStore.closeRecordStore();
@@ -362,7 +364,7 @@ public class BounceGame implements CommandListener {
                     dataOutputStream.writeLong(System.currentTimeMillis());
                     dataOutputStream.writeByte(b1);
                     dataOutputStream.writeByte(this.v.lives);
-                    dataOutputStream.writeByte(this.v.ringsScored);
+                    dataOutputStream.writeByte(this.v.HoopsScored);
                     dataOutputStream.writeByte(this.v.level);
                     dataOutputStream.writeByte(this.v.aq.a);
                     dataOutputStream.writeInt(this.v.score);
@@ -406,7 +408,7 @@ public class BounceGame implements CommandListener {
                         dataOutputStream.writeShort(this.v.ae[b5][0]);
                         dataOutputStream.writeShort(this.v.ae[b5][1]);
                     }
-                    dataOutputStream.writeLong(-559038737L);
+                    dataOutputStream.writeLong(RECORD_STORE_MAGIC);
                     break;
             }
             RecordStore recordStore = RecordStore.openRecordStore("bounceRMS", true);
@@ -429,7 +431,7 @@ public class BounceGame implements CommandListener {
         this.E = this.v.score;
     }
 
-    public void ShowInstructions(boolean paramBoolean) {
+    public void TODO_ShowInstructions(boolean paramBoolean) {
         this.K = 3;
         this.J = 0;
         this.v.H = false;
