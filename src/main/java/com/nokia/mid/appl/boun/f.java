@@ -420,13 +420,13 @@ public class f {
 
     public boolean a(int paramInt1, int paramInt2, int paramInt3, int paramInt4) {
         int k;
-        if (paramInt3 >= this.n.ai || paramInt3 < 0 || paramInt4 >= this.n.c || paramInt4 < 0)
+        if (paramInt3 >= this.n.TODO_height || paramInt3 < 0 || paramInt4 >= this.n.TODO_width || paramInt4 < 0)
             return false;
         if (this.z == 2)
             return false;
         boolean bool = true;
-        int i = this.n.C[paramInt3][paramInt4] & 0x40;
-        int j = this.n.C[paramInt3][paramInt4] & 0xFFFFFFBF & 0xFFFFFF7F;
+        int isInWater = this.n.LevelTiles[paramInt3][paramInt4] & 0x40;
+        int j = this.n.LevelTiles[paramInt3][paramInt4] & (~0x40) & (~0x80);
         Sound sound = null;
         switch (j) {
             case 1 -> {
@@ -459,10 +459,10 @@ public class f {
                 }
             }
             case 10 -> {
-                k = this.n.b(paramInt4, paramInt3);
+                k = this.n.TestPointInsideSpikeStars(paramInt4, paramInt3);
                 if (k != -1) {
-                    int m = this.n.P[k][0] * 12 + this.n.w[k][0];
-                    int n = this.n.P[k][1] * 12 + this.n.w[k][1];
+                    int m = this.n.SpikeStarsTopLeft[k].x * 12 + this.n.w[k][0];
+                    int n = this.n.SpikeStarsTopLeft[k].y * 12 + this.n.w[k][1];
                     if (a(paramInt1 - this.p + 1, paramInt2 - this.p + 1, paramInt1 + this.p - 1, paramInt2 + this.p - 1, m + 1, n + 1, m + 24 - 1, n + 24 - 1)) {
                         bool = false;
                         KillBall();
@@ -477,9 +477,9 @@ public class f {
             }
             case 7 -> {
                 this.n.AddScore(200);
-                this.n.C[this.c][this.d] = 128;
+                this.n.LevelTiles[this.c][this.d] = 128;
                 a(paramInt4, paramInt3);
-                this.n.C[paramInt3][paramInt4] = 136;
+                this.n.LevelTiles[paramInt3][paramInt4] = 136;
                 sound = this.n.soundPickup;
             }
             case 23 -> {
@@ -489,8 +489,8 @@ public class f {
                         break;
                     }
                     OnTouchHoop();
-                    this.n.C[paramInt3][paramInt4] = (short) (0x9B | i);
-                    this.n.C[paramInt3][paramInt4 + 1] = (short) (0x9C | i);
+                    this.n.LevelTiles[paramInt3][paramInt4] = (short) (0x9B | isInWater);
+                    this.n.LevelTiles[paramInt3][paramInt4 + 1] = (short) (0x9C | isInWater);
                     sound = this.n.soundUp;
                 }
             }
@@ -503,8 +503,8 @@ public class f {
                     if (a(paramInt1, paramInt2, paramInt3, paramInt4, j))
                         bool = false;
                     OnTouchHoop();
-                    this.n.C[paramInt3][paramInt4] = (short) (0x93 | i);
-                    this.n.C[paramInt3][paramInt4 + 1] = (short) (0x94 | i);
+                    this.n.LevelTiles[paramInt3][paramInt4] = (short) (0x93 | isInWater);
+                    this.n.LevelTiles[paramInt3][paramInt4 + 1] = (short) (0x94 | isInWater);
                     sound = this.n.soundUp;
                 }
             }
@@ -513,8 +513,8 @@ public class f {
                     if (a(paramInt1, paramInt2, paramInt3, paramInt4, j))
                         bool = false;
                     OnTouchHoop();
-                    this.n.C[paramInt3][paramInt4] = (short) (0x9C | i);
-                    this.n.C[paramInt3][paramInt4 - 1] = (short) (0x9B | i);
+                    this.n.LevelTiles[paramInt3][paramInt4] = (short) (0x9C | isInWater);
+                    this.n.LevelTiles[paramInt3][paramInt4 - 1] = (short) (0x9B | isInWater);
                     sound = this.n.soundUp;
                 }
             }
@@ -527,8 +527,8 @@ public class f {
                     if (a(paramInt1, paramInt2, paramInt3, paramInt4, j))
                         bool = false;
                     OnTouchHoop();
-                    this.n.C[paramInt3][paramInt4] = (short) (0x94 | i);
-                    this.n.C[paramInt3][paramInt4 - 1] = (short) (0x93 | i);
+                    this.n.LevelTiles[paramInt3][paramInt4] = (short) (0x94 | isInWater);
+                    this.n.LevelTiles[paramInt3][paramInt4 - 1] = (short) (0x93 | isInWater);
                     sound = this.n.soundUp;
                 }
             }
@@ -537,8 +537,8 @@ public class f {
                     if (a(paramInt1, paramInt2, paramInt3, paramInt4, j))
                         bool = false;
                     OnTouchHoop();
-                    this.n.C[paramInt3][paramInt4] = (short) (0x99 | i);
-                    this.n.C[paramInt3 + 1][paramInt4] = (short) (0x9A | i);
+                    this.n.LevelTiles[paramInt3][paramInt4] = (short) (0x99 | isInWater);
+                    this.n.LevelTiles[paramInt3 + 1][paramInt4] = (short) (0x9A | isInWater);
                     sound = this.n.soundUp;
                 }
             }
@@ -551,16 +551,16 @@ public class f {
                     if (a(paramInt1, paramInt2, paramInt3, paramInt4, j))
                         bool = false;
                     OnTouchHoop();
-                    this.n.C[paramInt3][paramInt4] = (short) (0x91 | i);
-                    this.n.C[paramInt3 + 1][paramInt4] = (short) (0x92 | i);
+                    this.n.LevelTiles[paramInt3][paramInt4] = (short) (0x91 | isInWater);
+                    this.n.LevelTiles[paramInt3 + 1][paramInt4] = (short) (0x92 | isInWater);
                     sound = this.n.soundUp;
                 }
             }
             case 22 -> {
                 if (b(paramInt1, paramInt2, paramInt3, paramInt4, j)) {
                     OnTouchHoop();
-                    this.n.C[paramInt3][paramInt4] = (short) (0x9A | i);
-                    this.n.C[paramInt3 - 1][paramInt4] = (short) (0x99 | i);
+                    this.n.LevelTiles[paramInt3][paramInt4] = (short) (0x9A | isInWater);
+                    this.n.LevelTiles[paramInt3 - 1][paramInt4] = (short) (0x99 | isInWater);
                     sound = this.n.soundUp;
                 }
             }
@@ -571,8 +571,8 @@ public class f {
                         break;
                     }
                     OnTouchHoop();
-                    this.n.C[paramInt3][paramInt4] = (short) (0x92 | i);
-                    this.n.C[paramInt3 - 1][paramInt4] = (short) (0x91 | i);
+                    this.n.LevelTiles[paramInt3][paramInt4] = (short) (0x92 | isInWater);
+                    this.n.LevelTiles[paramInt3 - 1][paramInt4] = (short) (0x91 | isInWater);
                     sound = this.n.soundUp;
                 }
             }
@@ -610,7 +610,7 @@ public class f {
                     this.n.lives++;
                     this.n.y = true;
                 }
-                this.n.C[paramInt3][paramInt4] = 128;
+                this.n.LevelTiles[paramInt3][paramInt4] = 128;
                 sound = this.n.soundPickup;
             }
             case 39, 40, 41, 42 -> {
@@ -664,7 +664,7 @@ public class f {
         }
         int m = this.s / 12;
         int n = this.r / 12;
-        boolean bool2 = (this.n.C[n][m] & 0x40) != 0;
+        boolean bool2 = (this.n.LevelTiles[n][m] & 0x40) != 0;
         if (bool2) {
             if (this.a == 16) {
                 k = -30;
@@ -727,7 +727,7 @@ public class f {
                 this.m = false;
                 if (k == -30) {
                     n = this.r / 12;
-                    if ((this.n.C[n][m] & 0x40) == 0) {
+                    if ((this.n.LevelTiles[n][m] & 0x40) == 0) {
                         this.o >>= 1;
                         if (this.o <= 10 && this.o >= -10)
                             this.o = 0;

@@ -383,9 +383,9 @@ public class BounceGame implements CommandListener {
                     dataOutputStream.writeInt(this.v.aq.y);
                     arrayOfInt = new int[50][3];
                     b2 = 0;
-                    for (b3 = 0; b3 < this.v.ai; b3++) {
-                        for (byte b = 0; b < this.v.c; b++) {
-                            byte b6 = (byte) (this.v.C[b3][b] & 0xFF7F & 0xFFFFFFBF);
+                    for (b3 = 0; b3 < this.v.TODO_height; b3++) {
+                        for (byte b = 0; b < this.v.TODO_width; b++) {
+                            byte b6 = (byte) (this.v.LevelTiles[b3][b] & 0xFF7F & 0xFFFFFFBF);
                             if (b6 == 7 || b6 == 29 || b6 == 13 || b6 == 14 || b6 == 21 || b6 == 22 || b6 == 15 || b6 == 16 || b6 == 23 || b6 == 24) {
                                 arrayOfInt[b2][0] = b3;
                                 arrayOfInt[b2][1] = b;
@@ -401,8 +401,8 @@ public class BounceGame implements CommandListener {
                         dataOutputStream.writeByte(arrayOfInt[b4][2]);
                     }
                     arrayOfInt = null;
-                    dataOutputStream.writeByte(this.v.B);
-                    for (b5 = 0; b5 < this.v.B; b5++) {
+                    dataOutputStream.writeByte(this.v.SpikeStarsCount);
+                    for (b5 = 0; b5 < this.v.SpikeStarsCount; b5++) {
                         dataOutputStream.writeShort(this.v.w[b5][0]);
                         dataOutputStream.writeShort(this.v.w[b5][1]);
                         dataOutputStream.writeShort(this.v.ae[b5][0]);

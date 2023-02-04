@@ -95,13 +95,13 @@ public class e extends b {
         this.lives = this.game.RecordLives;
         this.score = this.game.RecordScore;
         RunGarbageCollector();
-        CreateTiles(this.level);
+        LoadLevelId(this.level);
         k();
         AddScore();
         this.p = 120;
         this.y = true;
         if (this.game.e != this.s && this.game.b != this.S)
-            this.C[this.game.b][this.game.e] = (short) (0x8 | this.C[this.game.b][this.game.e] & 0x40);
+            this.LevelTiles[this.game.b][this.game.e] = (short) (0x8 | this.LevelTiles[this.game.b][this.game.e] & 0x40);
         a(paramInt1, paramInt2, this.game.A, this.game.a, this.game.g);
         synchronized (this.aq) {
             this.aq.a(this.game.e, this.game.b);
@@ -114,7 +114,7 @@ public class e extends b {
 
     private void InitializeGame() {
         RunGarbageCollector();
-        CreateTiles(this.level);
+        LoadLevelId(this.level);
         this.HoopsScored = 0;
         this.p = 120;
         this.y = true;
@@ -136,8 +136,8 @@ public class e extends b {
         int i = this.aq.s - 64;
         if (i < 0) {
             i = 0;
-        } else if (i > this.c * 12 - 156) {
-            i = this.c * 12 - 156;
+        } else if (i > this.TODO_width * 12 - 156) {
+            i = this.TODO_width * 12 - 156;
         }
         this.l = i / 12;
         this.v = this.l * 12 - i;
@@ -279,7 +279,7 @@ public class e extends b {
                 this.aq.c = j;
                 this.aq.b = k;
             }
-            if (this.B != 0)
+            if (this.SpikeStarsCount != 0)
                 o();
             if (this.HoopsScored == this.HoopsTotal)
                 this.TODO_ExitUnlocked = true;
@@ -290,10 +290,10 @@ public class e extends b {
                 } else {
                     h();
                 }
-                this.C[this.u][this.al] = (short) (this.C[this.u][this.al] | 0x80);
-                this.C[this.u][this.al + 1] = (short) (this.C[this.u][this.al + 1] | 0x80);
-                this.C[this.u + 1][this.al] = (short) (this.C[this.u + 1][this.al] | 0x80);
-                this.C[this.u + 1][this.al + 1] = (short) (this.C[this.u + 1][this.al + 1] | 0x80);
+                this.LevelTiles[this.u][this.al] = (short) (this.LevelTiles[this.u][this.al] | 0x80);
+                this.LevelTiles[this.u][this.al + 1] = (short) (this.LevelTiles[this.u][this.al + 1] | 0x80);
+                this.LevelTiles[this.u + 1][this.al] = (short) (this.LevelTiles[this.u + 1][this.al] | 0x80);
+                this.LevelTiles[this.u + 1][this.al + 1] = (short) (this.LevelTiles[this.u + 1][this.al + 1] | 0x80);
             }
             this.boostTimer = 0;
             if (this.aq.h != 0 || this.aq.g != 0 || this.aq.y != 0) {
@@ -492,45 +492,45 @@ public class e extends b {
     }
 
     public void k() {
-        for (byte b1 = 0; b1 < this.ai; b1++) {
-            for (byte b2 = 0; b2 < this.c; b2++) {
-                byte b3 = (byte) (this.C[b1][b2] & 0xFF7F & 0xFFFFFFBF);
+        for (byte b1 = 0; b1 < this.TODO_height; b1++) {
+            for (byte b2 = 0; b2 < this.TODO_width; b2++) {
+                byte b3 = (byte) (this.LevelTiles[b1][b2] & 0xFF7F & 0xFFFFFFBF);
                 switch (b3) {
                     case 7, 29 -> {
                         if (a(b1, b2, b3))
-                            this.C[b1][b2] = (short) (0x0 | this.C[b1][b2] & 0x40);
+                            this.LevelTiles[b1][b2] = (short) (0x0 | this.LevelTiles[b1][b2] & 0x40);
                     }
                     case 13 -> {
                         if (a(b1, b2, b3))
-                            this.C[b1][b2] = (short) (0x11 | this.C[b1][b2] & 0x40);
+                            this.LevelTiles[b1][b2] = (short) (0x11 | this.LevelTiles[b1][b2] & 0x40);
                     }
                     case 14 -> {
                         if (a(b1, b2, b3))
-                            this.C[b1][b2] = (short) (0x12 | this.C[b1][b2] & 0x40);
+                            this.LevelTiles[b1][b2] = (short) (0x12 | this.LevelTiles[b1][b2] & 0x40);
                     }
                     case 21 -> {
                         if (a(b1, b2, b3))
-                            this.C[b1][b2] = (short) (0x19 | this.C[b1][b2] & 0x40);
+                            this.LevelTiles[b1][b2] = (short) (0x19 | this.LevelTiles[b1][b2] & 0x40);
                     }
                     case 22 -> {
                         if (a(b1, b2, b3))
-                            this.C[b1][b2] = (short) (0x1A | this.C[b1][b2] & 0x40);
+                            this.LevelTiles[b1][b2] = (short) (0x1A | this.LevelTiles[b1][b2] & 0x40);
                     }
                     case 15 -> {
                         if (a(b1, b2, b3))
-                            this.C[b1][b2] = (short) (0x13 | this.C[b1][b2] & 0x40);
+                            this.LevelTiles[b1][b2] = (short) (0x13 | this.LevelTiles[b1][b2] & 0x40);
                     }
                     case 16 -> {
                         if (a(b1, b2, b3))
-                            this.C[b1][b2] = (short) (0x14 | this.C[b1][b2] & 0x40);
+                            this.LevelTiles[b1][b2] = (short) (0x14 | this.LevelTiles[b1][b2] & 0x40);
                     }
                     case 23 -> {
                         if (a(b1, b2, b3))
-                            this.C[b1][b2] = (short) (0x1B | this.C[b1][b2] & 0x40);
+                            this.LevelTiles[b1][b2] = (short) (0x1B | this.LevelTiles[b1][b2] & 0x40);
                     }
                     case 24 -> {
                         if (a(b1, b2, b3))
-                            this.C[b1][b2] = (short) (0x1C | this.C[b1][b2] & 0x40);
+                            this.LevelTiles[b1][b2] = (short) (0x1C | this.LevelTiles[b1][b2] & 0x40);
                     }
                 }
             }
