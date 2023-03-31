@@ -66,7 +66,7 @@ public class BounceGame implements CommandListener {
 
     public int r;
 
-    public short[][] D;
+    public Vec2S[] D;
 
     public short[][] l;
 
@@ -317,11 +317,11 @@ public class BounceGame implements CommandListener {
                     this.u[b1][2] = recordDIS.readByte();
                 }
                 this.r = recordDIS.readByte();
-                this.D = new short[this.r][2];
+                this.D = new Vec2S[this.r];
                 this.l = new short[this.r][2];
                 for (byte b2 = 0; b2 < this.r; b2++) {
-                    this.D[b2][0] = recordDIS.readShort();
-                    this.D[b2][1] = recordDIS.readShort();
+                    this.D[b2].x = recordDIS.readShort();
+                    this.D[b2].y = recordDIS.readShort();
                     this.l[b2][0] = recordDIS.readShort();
                     this.l[b2][1] = recordDIS.readShort();
                 }
@@ -344,15 +344,11 @@ public class BounceGame implements CommandListener {
             byte b2;
             byte b3;
             byte b4;
-            byte b5;
+            byte spike;
             switch (what) {
-                case 1:
-                    dataOutputStream.writeByte(this.MaxLevels);
-                    break;
-                case 2:
-                    dataOutputStream.writeInt(this.HighScore);
-                    break;
-                case 3:
+                case 1 -> dataOutputStream.writeByte(this.MaxLevels);
+                case 2 -> dataOutputStream.writeInt(this.HighScore);
+                case 3 -> {
                     if (this.v == null || this.v.aq == null)
                         return;
                     b1 = 0;
@@ -366,7 +362,7 @@ public class BounceGame implements CommandListener {
                     dataOutputStream.writeByte(this.v.lives);
                     dataOutputStream.writeByte(this.v.HoopsScored);
                     dataOutputStream.writeByte(this.v.level);
-                    dataOutputStream.writeByte(this.v.aq.a);
+                    dataOutputStream.writeByte(this.v.aq.ballSize);
                     dataOutputStream.writeInt(this.v.score);
                     dataOutputStream.writeInt(this.v.l);
                     dataOutputStream.writeInt(this.v.k);
@@ -378,14 +374,14 @@ public class BounceGame implements CommandListener {
                     dataOutputStream.writeInt(0);
                     dataOutputStream.writeInt(this.v.aq.d);
                     dataOutputStream.writeInt(this.v.aq.c);
-                    dataOutputStream.writeInt(this.v.aq.h);
-                    dataOutputStream.writeInt(this.v.aq.g);
-                    dataOutputStream.writeInt(this.v.aq.y);
+                    dataOutputStream.writeInt(this.v.aq.TODO_somePowerUp1);
+                    dataOutputStream.writeInt(this.v.aq.powerUpGravity);
+                    dataOutputStream.writeInt(this.v.aq.TODO_somePowerUp3);
                     arrayOfInt = new int[50][3];
                     b2 = 0;
                     for (b3 = 0; b3 < this.v.TODO_height; b3++) {
                         for (byte b = 0; b < this.v.TODO_width; b++) {
-                            byte b6 = (byte) (this.v.LevelTiles[b3][b] & 0xFF7F & 0xFFFFFFBF);
+                            byte b6 = (byte) (this.v.LevelTiles[b3][b] & 0xFF7F & (~0x40));
                             if (b6 == 7 || b6 == 29 || b6 == 13 || b6 == 14 || b6 == 21 || b6 == 22 || b6 == 15 || b6 == 16 || b6 == 23 || b6 == 24) {
                                 arrayOfInt[b2][0] = b3;
                                 arrayOfInt[b2][1] = b;
@@ -402,14 +398,14 @@ public class BounceGame implements CommandListener {
                     }
                     arrayOfInt = null;
                     dataOutputStream.writeByte(this.v.SpikeStarsCount);
-                    for (b5 = 0; b5 < this.v.SpikeStarsCount; b5++) {
-                        dataOutputStream.writeShort(this.v.w[b5][0]);
-                        dataOutputStream.writeShort(this.v.w[b5][1]);
-                        dataOutputStream.writeShort(this.v.ae[b5][0]);
-                        dataOutputStream.writeShort(this.v.ae[b5][1]);
+                    for (spike = 0; spike < this.v.SpikeStarsCount; spike++) {
+                        dataOutputStream.writeShort(this.v.w[spike].x);
+                        dataOutputStream.writeShort(this.v.w[spike].y);
+                        dataOutputStream.writeShort(this.v.ae[spike].x);
+                        dataOutputStream.writeShort(this.v.ae[spike].y);
                     }
                     dataOutputStream.writeLong(RECORD_STORE_MAGIC);
-                    break;
+                }
             }
             RecordStore recordStore = RecordStore.openRecordStore("bounceRMS", true);
             recordStore.setRecord(what, byteArrayOutputStream.toByteArray(), 0, byteArrayOutputStream.size());

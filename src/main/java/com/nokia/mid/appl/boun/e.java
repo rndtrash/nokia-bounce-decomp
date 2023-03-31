@@ -105,9 +105,9 @@ public class e extends b {
         a(paramInt1, paramInt2, this.game.A, this.game.a, this.game.g);
         synchronized (this.aq) {
             this.aq.a(this.game.e, this.game.b);
-            this.aq.h = this.game.w;
-            this.aq.g = this.game.z;
-            this.aq.y = this.game.n;
+            this.aq.TODO_somePowerUp1 = this.game.w;
+            this.aq.powerUpGravity = this.game.z;
+            this.aq.TODO_somePowerUp3 = this.game.n;
             this.T = true;
         }
     }
@@ -172,7 +172,7 @@ public class e extends b {
         CreateTiles(this.X, this.aq.s, this.aq.r, this.aq.p, this.v);
         this.X.setClip(0, 0, 128, 128);
         if (this.y) {
-            this.X.setColor(0x0853aa);
+            this.X.setColor(0x0853aa); // Blue background
             this.X.fillRect(0, 97, 128, 32);
             for (byte b1 = 0; b1 < this.lives; b1++)
                 this.X.drawImage(this.imageBall, 5 + b1 * (this.imageBall.getWidth() - 1), 99, Graphics.TOP | Graphics.LEFT);
@@ -214,7 +214,7 @@ public class e extends b {
         if (this.aq.z == 2) {
             paramGraphics.drawImage(this.aq.spritePoppedBall, i - 6 + paramInt, j - 6, 20);
         } else {
-            paramGraphics.drawImage(this.aq.i, i - this.aq.p + paramInt, j - this.aq.p, 20);
+            paramGraphics.drawImage(this.aq.spriteCurrentBall, i - this.aq.p + paramInt, j - this.aq.p, 20);
         }
     }
 
@@ -232,7 +232,7 @@ public class e extends b {
                 this.ImageSplash = null;
                 Runtime.getRuntime().gc();
                 switch (this.SplashId) {
-                    case 0: // Switch to the next splash
+                    case 0 -> { // Switch to the next splash
                         this.SplashId = 1;
                         try {
                             this.ImageSplash = Image.createImage(SPLASHES[this.SplashId]);
@@ -240,12 +240,12 @@ public class e extends b {
                             this.ImageSplash = Image.createImage(1, 1);
                         }
                         repaint();
-                        break;
-                    case 1: // Open the main menu
+                    }
+                    case 1 -> { // Open the main menu
                         this.SplashId = -1;
                         this.H = false;
                         this.game.ShowMainMenu();
-                        break;
+                    }
                 }
                 this.splashTimer = 0;
             } else {
@@ -296,13 +296,13 @@ public class e extends b {
                 this.LevelTiles[this.u + 1][this.al + 1] = (short) (this.LevelTiles[this.u + 1][this.al + 1] | 0x80);
             }
             this.boostTimer = 0;
-            if (this.aq.h != 0 || this.aq.g != 0 || this.aq.y != 0) {
-                if (this.aq.h > this.boostTimer)
-                    this.boostTimer = this.aq.h;
-                if (this.aq.g > this.boostTimer)
-                    this.boostTimer = this.aq.g;
-                if (this.aq.y > this.boostTimer)
-                    this.boostTimer = this.aq.y;
+            if (this.aq.TODO_somePowerUp1 != 0 || this.aq.powerUpGravity != 0 || this.aq.TODO_somePowerUp3 != 0) {
+                if (this.aq.TODO_somePowerUp1 > this.boostTimer)
+                    this.boostTimer = this.aq.TODO_somePowerUp1;
+                if (this.aq.powerUpGravity > this.boostTimer)
+                    this.boostTimer = this.aq.powerUpGravity;
+                if (this.aq.TODO_somePowerUp3 > this.boostTimer)
+                    this.boostTimer = this.aq.TODO_somePowerUp3;
                 if (this.boostTimer % 30 == 0 || this.boostTimer == 1)
                     this.y = true;
             }
@@ -381,7 +381,7 @@ public class e extends b {
                     break;
                 case 35:
                     if (this.af)
-                        this.aq.g = 300;
+                        this.aq.powerUpGravity = 300;
                     break;
                 case -7:
                 case -6:
@@ -481,10 +481,10 @@ public class e extends b {
 
     public void AddScore() {
         for (byte b1 = 0; b1 < this.game.r; b1++) {
-            this.ae[b1][0] = this.game.l[b1][0];
-            this.ae[b1][1] = this.game.l[b1][1];
-            this.w[b1][0] = this.game.D[b1][0];
-            this.w[b1][1] = this.game.D[b1][1];
+            this.ae[b1].x = this.game.l[b1][0];
+            this.ae[b1].y = this.game.l[b1][1];
+            this.w[b1].x = this.game.D[b1].x;
+            this.w[b1].y = this.game.D[b1].y;
         }
         this.game.D = null;
         this.game.l = null;
@@ -494,7 +494,7 @@ public class e extends b {
     public void k() {
         for (byte b1 = 0; b1 < this.TODO_height; b1++) {
             for (byte b2 = 0; b2 < this.TODO_width; b2++) {
-                byte b3 = (byte) (this.LevelTiles[b1][b2] & 0xFF7F & 0xFFFFFFBF);
+                byte b3 = (byte) (this.LevelTiles[b1][b2] & 0xFF7F & (~0x40));
                 switch (b3) {
                     case 7, 29 -> {
                         if (a(b1, b2, b3))

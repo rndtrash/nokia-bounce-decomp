@@ -17,7 +17,7 @@ public class f {
 
     public int w;
 
-    public int a;
+    public int ballSize;
 
     public int p;
 
@@ -31,11 +31,11 @@ public class f {
 
     public int t;
 
-    public int h;
+    public int TODO_somePowerUp1;
 
-    public int g;
+    public int powerUpGravity;
 
-    public int y;
+    public int TODO_somePowerUp3;
 
     public boolean m;
 
@@ -96,7 +96,7 @@ public class f {
 
     public e n;
 
-    public Image i;
+    public Image spriteCurrentBall;
 
     public Image spritePoppedBall;
 
@@ -106,7 +106,7 @@ public class f {
 
     private int q;
 
-    public f(int paramInt1, int paramInt2, int paramInt3, e parame) {
+    public f(int paramInt1, int paramInt2, int ballSize, e parame) {
         this.s = paramInt1;
         this.r = paramInt2;
         this.l = 0;
@@ -117,24 +117,24 @@ public class f {
         this.v = false;
         this.u = false;
         this.q = 0;
-        this.h = 0;
-        this.g = 0;
-        this.y = 0;
+        this.TODO_somePowerUp1 = 0;
+        this.powerUpGravity = 0;
+        this.TODO_somePowerUp3 = 0;
         this.C = 0;
         this.z = 0;
         this.w = 0;
         this.n.CreateTiles(this);
-        if (paramInt3 == 12) {
-            c();
+        if (ballSize == 12) {
+            UseRegularBall();
         } else {
-            f();
+            UseBigBall();
         }
     }
 
-    public void a(int paramInt1, int paramInt2) {
-        this.d = paramInt1;
-        this.c = paramInt2;
-        this.b = this.a;
+    public void a(int x, int y) {
+        this.d = x;
+        this.c = y;
+        this.b = this.ballSize;
     }
 
     public void c(int paramInt) {
@@ -165,13 +165,15 @@ public class f {
         return true;
     }
 
-    public void f() {
-        this.a = 16;
+    public void UseBigBall() {
+        this.ballSize = 16;
         this.p = 8;
-        this.i = this.spriteBigBall;
-        boolean bool = false;
-        for (byte b = 1; !bool; b++) {
-            bool = true;
+        this.spriteCurrentBall = this.spriteBigBall;
+
+        // Try to solve any collisions with the world
+        boolean TODO_collidesWithLevel = false;
+        for (byte b = 1; !TODO_collidesWithLevel; b++) {
+            TODO_collidesWithLevel = true;
             if (b(this.s, this.r - b)) {
                 this.r -= b;
                 continue;
@@ -200,14 +202,14 @@ public class f {
                 this.r += b;
                 continue;
             }
-            bool = false;
+            TODO_collidesWithLevel = false;
         }
     }
 
-    public void c() {
-        this.a = 12;
+    public void UseRegularBall() {
+        this.ballSize = 12;
         this.p = 6;
-        this.i = this.spriteBall;
+        this.spriteCurrentBall = this.spriteBall;
     }
 
     public void KillBall() {
@@ -215,9 +217,9 @@ public class f {
             this.q = 7;
             this.z = 2;
             this.n.lives--;
-            this.h = 0;
-            this.g = 0;
-            this.y = 0;
+            this.TODO_somePowerUp1 = 0;
+            this.powerUpGravity = 0;
+            this.TODO_somePowerUp3 = 0;
             this.n.y = true;
             this.n.soundPop.play(1);
         }
@@ -267,14 +269,14 @@ public class f {
         }
     }
 
-    public boolean b(int paramInt1, int paramInt2, int paramInt3, int paramInt4) {
+    public boolean b(int paramInt1, int paramInt2, int y, int x) {
         byte b1;
         int n;
         byte b2;
         int i1;
         byte[][] ballCollision;
-        int i = paramInt4 * 12;
-        int j = paramInt3 * 12;
+        int i = x * 12;
+        int j = y * 12;
         int k = paramInt1 - this.p - i;
         int m = paramInt2 - this.p - j;
         if (k >= 0) {
@@ -282,16 +284,16 @@ public class f {
             n = 12;
         } else {
             b1 = 0;
-            n = this.a + k;
+            n = this.ballSize + k;
         }
         if (m >= 0) {
             b2 = (byte) m;
             i1 = 12;
         } else {
             b2 = 0;
-            i1 = this.a + m;
+            i1 = this.ballSize + m;
         }
-        if (this.a == 16) {
+        if (this.ballSize == 16) {
             ballCollision = BIG_BALL_COLLISION;
         } else {
             ballCollision = BALL_COLLISION;
@@ -309,19 +311,19 @@ public class f {
         return false;
     }
 
-    public boolean c(int paramInt1, int paramInt2, int paramInt3, int paramInt4, int paramInt5) {
+    public boolean c(int paramInt1, int paramInt2, int y, int x, int tileId) {
         byte b3;
         int n;
         byte b4;
         int i1;
         byte[][] ballCollision;
-        int i = paramInt4 * 12;
-        int j = paramInt3 * 12;
+        int i = x * 12;
+        int j = y * 12;
         int k = paramInt1 - this.p - i;
         int m = paramInt2 - this.p - j;
         byte b1 = 0;
         byte b2 = 0;
-        switch (paramInt5) {
+        switch (tileId) {
             case 30, 34 -> {
                 b2 = 11;
                 b1 = 11;
@@ -334,16 +336,16 @@ public class f {
             n = 12;
         } else {
             b3 = 0;
-            n = this.a + k;
+            n = this.ballSize + k;
         }
         if (m >= 0) {
             b4 = (byte) m;
             i1 = 12;
         } else {
             b4 = 0;
-            i1 = this.a + m;
+            i1 = this.ballSize + m;
         }
-        if (this.a == 16) {
+        if (this.ballSize == 16) {
             ballCollision = BIG_BALL_COLLISION;
         } else {
             ballCollision = BALL_COLLISION;
@@ -356,7 +358,7 @@ public class f {
             for (byte b = b4; b < i1; b++) {
                 if ((SLOPE_COLLISION[Math.abs(b - b2)][Math.abs(b5 - b1)] & ballCollision[b - m][b5 - k]) != 0) {
                     if (!this.m)
-                        b(paramInt5);
+                        b(tileId);
                     return true;
                 }
             }
@@ -418,27 +420,27 @@ public class f {
         return a(paramInt1 - this.p, paramInt2 - this.p, paramInt1 + this.p, paramInt2 + this.p, i, j, k, m);
     }
 
-    public boolean a(int paramInt1, int paramInt2, int paramInt3, int paramInt4) {
+    public boolean a(int paramInt1, int paramInt2, int y, int x) {
         int k;
-        if (paramInt3 >= this.n.TODO_height || paramInt3 < 0 || paramInt4 >= this.n.TODO_width || paramInt4 < 0)
+        if (y >= this.n.TODO_height || y < 0 || x >= this.n.TODO_width || x < 0)
             return false;
         if (this.z == 2)
             return false;
         boolean bool = true;
-        int isInWater = this.n.LevelTiles[paramInt3][paramInt4] & 0x40;
-        int j = this.n.LevelTiles[paramInt3][paramInt4] & (~0x40) & (~0x80);
+        int isInWater = this.n.LevelTiles[y][x] & 0x40;
+        int tileId = this.n.LevelTiles[y][x] & (~0x40) & (~0x80);
         Sound sound = null;
-        switch (j) {
-            case 1 -> {
-                if (b(paramInt1, paramInt2, paramInt3, paramInt4)) {
+        switch (tileId) {
+            case TileIDs.BRICK_WALL -> {
+                if (b(paramInt1, paramInt2, y, x)) {
                     bool = false;
                     this.u = true;
                     break;
                 }
                 this.u = true;
             }
-            case 2 -> {
-                if (b(paramInt1, paramInt2, paramInt3, paramInt4)) {
+            case TileIDs.RUBBER_WALL -> {
+                if (b(paramInt1, paramInt2, y, x)) {
                     this.v = true;
                     bool = false;
                     break;
@@ -446,156 +448,156 @@ public class f {
                 this.u = true;
             }
             case 34, 35, 36, 37 -> {
-                if (c(paramInt1, paramInt2, paramInt3, paramInt4, j)) {
+                if (c(paramInt1, paramInt2, y, x, tileId)) {
                     this.v = true;
                     bool = false;
                     this.u = true;
                 }
             }
             case 30, 31, 32, 33 -> {
-                if (c(paramInt1, paramInt2, paramInt3, paramInt4, j)) {
+                if (c(paramInt1, paramInt2, y, x, tileId)) {
                     bool = false;
                     this.u = true;
                 }
             }
             case 10 -> {
-                k = this.n.TestPointInsideSpikeStars(paramInt4, paramInt3);
+                k = this.n.TestPointInsideSpikeStars(x, y);
                 if (k != -1) {
-                    int m = this.n.SpikeStarsTopLeft[k].x * 12 + this.n.w[k][0];
-                    int n = this.n.SpikeStarsTopLeft[k].y * 12 + this.n.w[k][1];
+                    int m = this.n.SpikeStarsBottomLeft[k].x * 12 + this.n.w[k].x;
+                    int n = this.n.SpikeStarsBottomLeft[k].y * 12 + this.n.w[k].y;
                     if (a(paramInt1 - this.p + 1, paramInt2 - this.p + 1, paramInt1 + this.p - 1, paramInt2 + this.p - 1, m + 1, n + 1, m + 24 - 1, n + 24 - 1)) {
                         bool = false;
                         KillBall();
                     }
                 }
             }
-            case 3, 4, 5, 6 -> {
-                if (b(paramInt1, paramInt2, paramInt3, paramInt4, j)) {
+            case TileIDs.SPIKES_UP, TileIDs.SPIKES_RIGHT, TileIDs.SPIKES_DOWN, TileIDs.SPIKES_LEFT -> {
+                if (b(paramInt1, paramInt2, y, x, tileId)) {
                     bool = false;
                     KillBall();
                 }
             }
-            case 7 -> {
+            case TileIDs.CRYSTAL -> {
                 this.n.AddScore(200);
-                this.n.LevelTiles[this.c][this.d] = 128;
-                a(paramInt4, paramInt3);
-                this.n.LevelTiles[paramInt3][paramInt4] = 136;
+                this.n.LevelTiles[this.c][this.d] = 0x80 | TileIDs.EMPTY;
+                a(x, y);
+                this.n.LevelTiles[y][x] = 0x80 | TileIDs.CRYSTAL_ACTIVE;
                 sound = this.n.soundPickup;
             }
             case 23 -> {
-                if (b(paramInt1, paramInt2, paramInt3, paramInt4, j)) {
-                    if (a(paramInt1, paramInt2, paramInt3, paramInt4, j)) {
+                if (b(paramInt1, paramInt2, y, x, tileId)) {
+                    if (a(paramInt1, paramInt2, y, x, tileId)) {
                         bool = false;
                         break;
                     }
                     OnTouchHoop();
-                    this.n.LevelTiles[paramInt3][paramInt4] = (short) (0x9B | isInWater);
-                    this.n.LevelTiles[paramInt3][paramInt4 + 1] = (short) (0x9C | isInWater);
+                    this.n.LevelTiles[y][x] = (short) (0x80 | 27 | isInWater);
+                    this.n.LevelTiles[y][x + 1] = (short) (0x80 | 28 | isInWater);
                     sound = this.n.soundUp;
                 }
             }
             case 15 -> {
-                if (b(paramInt1, paramInt2, paramInt3, paramInt4, j)) {
-                    if (this.a == 16) {
+                if (b(paramInt1, paramInt2, y, x, tileId)) {
+                    if (this.ballSize == 16) {
                         bool = false;
                         break;
                     }
-                    if (a(paramInt1, paramInt2, paramInt3, paramInt4, j))
+                    if (a(paramInt1, paramInt2, y, x, tileId))
                         bool = false;
                     OnTouchHoop();
-                    this.n.LevelTiles[paramInt3][paramInt4] = (short) (0x93 | isInWater);
-                    this.n.LevelTiles[paramInt3][paramInt4 + 1] = (short) (0x94 | isInWater);
+                    this.n.LevelTiles[y][x] = (short) (0x93 | isInWater);
+                    this.n.LevelTiles[y][x + 1] = (short) (0x94 | isInWater);
                     sound = this.n.soundUp;
                 }
             }
             case 24 -> {
-                if (b(paramInt1, paramInt2, paramInt3, paramInt4, j)) {
-                    if (a(paramInt1, paramInt2, paramInt3, paramInt4, j))
+                if (b(paramInt1, paramInt2, y, x, tileId)) {
+                    if (a(paramInt1, paramInt2, y, x, tileId))
                         bool = false;
                     OnTouchHoop();
-                    this.n.LevelTiles[paramInt3][paramInt4] = (short) (0x9C | isInWater);
-                    this.n.LevelTiles[paramInt3][paramInt4 - 1] = (short) (0x9B | isInWater);
+                    this.n.LevelTiles[y][x] = (short) (0x9C | isInWater);
+                    this.n.LevelTiles[y][x - 1] = (short) (0x9B | isInWater);
                     sound = this.n.soundUp;
                 }
             }
             case 16 -> {
-                if (b(paramInt1, paramInt2, paramInt3, paramInt4, j)) {
-                    if (this.a == 16) {
+                if (b(paramInt1, paramInt2, y, x, tileId)) {
+                    if (this.ballSize == 16) {
                         bool = false;
                         break;
                     }
-                    if (a(paramInt1, paramInt2, paramInt3, paramInt4, j))
+                    if (a(paramInt1, paramInt2, y, x, tileId))
                         bool = false;
                     OnTouchHoop();
-                    this.n.LevelTiles[paramInt3][paramInt4] = (short) (0x94 | isInWater);
-                    this.n.LevelTiles[paramInt3][paramInt4 - 1] = (short) (0x93 | isInWater);
+                    this.n.LevelTiles[y][x] = (short) (0x94 | isInWater);
+                    this.n.LevelTiles[y][x - 1] = (short) (0x93 | isInWater);
                     sound = this.n.soundUp;
                 }
             }
             case 21 -> {
-                if (b(paramInt1, paramInt2, paramInt3, paramInt4, j)) {
-                    if (a(paramInt1, paramInt2, paramInt3, paramInt4, j))
+                if (b(paramInt1, paramInt2, y, x, tileId)) {
+                    if (a(paramInt1, paramInt2, y, x, tileId))
                         bool = false;
                     OnTouchHoop();
-                    this.n.LevelTiles[paramInt3][paramInt4] = (short) (0x99 | isInWater);
-                    this.n.LevelTiles[paramInt3 + 1][paramInt4] = (short) (0x9A | isInWater);
+                    this.n.LevelTiles[y][x] = (short) (0x99 | isInWater);
+                    this.n.LevelTiles[y + 1][x] = (short) (0x9A | isInWater);
                     sound = this.n.soundUp;
                 }
             }
             case 13 -> {
-                if (b(paramInt1, paramInt2, paramInt3, paramInt4, j)) {
-                    if (this.a == 16) {
+                if (b(paramInt1, paramInt2, y, x, tileId)) {
+                    if (this.ballSize == 16) {
                         bool = false;
                         break;
                     }
-                    if (a(paramInt1, paramInt2, paramInt3, paramInt4, j))
+                    if (a(paramInt1, paramInt2, y, x, tileId))
                         bool = false;
                     OnTouchHoop();
-                    this.n.LevelTiles[paramInt3][paramInt4] = (short) (0x91 | isInWater);
-                    this.n.LevelTiles[paramInt3 + 1][paramInt4] = (short) (0x92 | isInWater);
+                    this.n.LevelTiles[y][x] = (short) (0x91 | isInWater);
+                    this.n.LevelTiles[y + 1][x] = (short) (0x92 | isInWater);
                     sound = this.n.soundUp;
                 }
             }
             case 22 -> {
-                if (b(paramInt1, paramInt2, paramInt3, paramInt4, j)) {
+                if (b(paramInt1, paramInt2, y, x, tileId)) {
                     OnTouchHoop();
-                    this.n.LevelTiles[paramInt3][paramInt4] = (short) (0x9A | isInWater);
-                    this.n.LevelTiles[paramInt3 - 1][paramInt4] = (short) (0x99 | isInWater);
+                    this.n.LevelTiles[y][x] = (short) (0x9A | isInWater);
+                    this.n.LevelTiles[y - 1][x] = (short) (0x99 | isInWater);
                     sound = this.n.soundUp;
                 }
             }
             case 14 -> {
-                if (b(paramInt1, paramInt2, paramInt3, paramInt4, j)) {
-                    if (this.a == 16) {
+                if (b(paramInt1, paramInt2, y, x, tileId)) {
+                    if (this.ballSize == 16) {
                         bool = false;
                         break;
                     }
                     OnTouchHoop();
-                    this.n.LevelTiles[paramInt3][paramInt4] = (short) (0x92 | isInWater);
-                    this.n.LevelTiles[paramInt3 - 1][paramInt4] = (short) (0x91 | isInWater);
+                    this.n.LevelTiles[y][x] = (short) (0x92 | isInWater);
+                    this.n.LevelTiles[y - 1][x] = (short) (0x91 | isInWater);
                     sound = this.n.soundUp;
                 }
             }
             case 17, 19, 20 -> {
-                if (b(paramInt1, paramInt2, paramInt3, paramInt4, j)) {
-                    if (this.a == 16) {
+                if (b(paramInt1, paramInt2, y, x, tileId)) {
+                    if (this.ballSize == 16) {
                         bool = false;
                         break;
                     }
-                    if (a(paramInt1, paramInt2, paramInt3, paramInt4, j))
+                    if (a(paramInt1, paramInt2, y, x, tileId))
                         bool = false;
                 }
             }
             case 25, 27, 28 -> {
-                if (a(paramInt1, paramInt2, paramInt3, paramInt4, j))
+                if (a(paramInt1, paramInt2, y, x, tileId))
                     bool = false;
             }
             case 18 -> {
-                if (b(paramInt1, paramInt2, paramInt3, paramInt4, j) && this.a == 16)
+                if (b(paramInt1, paramInt2, y, x, tileId) && this.ballSize == 16)
                     bool = false;
             }
             case 9 -> {
-                if (b(paramInt1, paramInt2, paramInt3, paramInt4, j)) {
+                if (b(paramInt1, paramInt2, y, x, tileId)) {
                     if (this.n.M) {
                         this.n.e = true;
                         sound = this.n.soundPickup;
@@ -610,34 +612,34 @@ public class f {
                     this.n.lives++;
                     this.n.y = true;
                 }
-                this.n.LevelTiles[paramInt3][paramInt4] = 128;
+                this.n.LevelTiles[y][x] = 0x80 | TileIDs.EMPTY;
                 sound = this.n.soundPickup;
             }
             case 39, 40, 41, 42 -> {
                 bool = false;
-                if (this.a == 16)
-                    c();
+                if (this.ballSize == 16)
+                    UseRegularBall();
             }
-            case 43, 44, 45, 46 -> {
-                if (b(paramInt1, paramInt2, paramInt3, paramInt4, j)) {
+            case TileIDs.PUMPER_UP, TileIDs.PUMPER_RIGHT, TileIDs.PUMPER_DOWN, TileIDs.PUMPER_LEFT -> {
+                if (b(paramInt1, paramInt2, y, x, tileId)) {
                     bool = false;
-                    if (this.a == 12)
-                        f();
+                    if (this.ballSize == 12)
+                        UseBigBall();
                 }
             }
-            case 47, 48, 49, 50 -> {
-                this.g = 300;
+            case TileIDs.POWER_UP_GRAVITY_UP, TileIDs.POWER_UP_GRAVITY_RIGHT, TileIDs.POWER_UP_GRAVITY_DOWN, TileIDs.POWER_UP_GRAVITY_LEFT -> {
+                this.powerUpGravity = 300;
                 sound = this.n.soundPickup;
                 this.m = false;
                 bool = false;
             }
             case 51, 52, 53, 54 -> {
-                this.y = 300;
+                this.TODO_somePowerUp3 = 300;
                 sound = this.n.soundPickup;
                 bool = false;
             }
             case 38 -> {
-                this.h = 300;
+                this.TODO_somePowerUp1 = 300;
                 sound = this.n.soundPickup;
                 bool = false;
             }
@@ -664,9 +666,9 @@ public class f {
         }
         int m = this.s / 12;
         int n = this.r / 12;
-        boolean bool2 = (this.n.LevelTiles[n][m] & 0x40) != 0;
-        if (bool2) {
-            if (this.a == 16) {
+        boolean isInWater = (this.n.LevelTiles[n][m] & 0x40) != 0;
+        if (isInWater) {
+            if (this.ballSize == 16) {
                 k = -30;
                 j = -2;
                 if (this.m)
@@ -675,33 +677,33 @@ public class f {
                 k = 42;
                 j = 6;
             }
-        } else if (this.a == 16) {
+        } else if (this.ballSize == 16) {
             k = 38;
             j = 3;
         } else {
             k = 80;
             j = 4;
         }
-        if (this.g != 0) {
+        if (this.powerUpGravity != 0) {
             bool1 = true;
             k *= -1;
             j *= -1;
-            this.g--;
-            if (this.g == 0) {
+            this.powerUpGravity--;
+            if (this.powerUpGravity == 0) {
                 bool1 = false;
                 this.m = false;
                 k *= -1;
                 j *= -1;
             }
         }
-        if (this.y != 0) {
+        if (this.TODO_somePowerUp3 != 0) {
             if (-1 * Math.abs(this.t) > -80)
                 if (bool1) {
                     this.t = 80;
                 } else {
                     this.t = -80;
                 }
-            this.y--;
+            this.TODO_somePowerUp3--;
         }
         this.C++;
         if (this.C == 3)
@@ -716,7 +718,7 @@ public class f {
         } else if (this.l > 150) {
             this.l = 150;
         }
-        if (this.o < 10 && this.o > 0 && !bool2 && !bool1)
+        if (this.o < 10 && this.o > 0 && !isInWater && !bool1)
             this.o = 10;
         for (byte b2 = 0; b2 < Math.abs(this.o) / 10; b2++) {
             byte b = 0;
@@ -756,7 +758,7 @@ public class f {
                         } else {
                             this.t += -10;
                         }
-                    } else if (this.y == 0) {
+                    } else if (this.TODO_somePowerUp3 == 0) {
                         this.t = 0;
                     }
                     if (this.o < 10 && this.o > -10) {
@@ -795,9 +797,9 @@ public class f {
             if (this.o > k)
                 this.o = k;
         }
-        if (this.h != 0) {
+        if (this.TODO_somePowerUp1 != 0) {
             b1 = 100;
-            this.h--;
+            this.TODO_somePowerUp1--;
         } else {
             b1 = 50;
         }
@@ -810,7 +812,7 @@ public class f {
         } else if (this.l < 0) {
             this.l += 4;
         }
-        if (this.a == 16 && this.y == 0)
+        if (this.ballSize == 16 && this.TODO_somePowerUp3 == 0)
             if (bool1) {
                 this.t += 5;
             } else {

@@ -93,6 +93,11 @@ public abstract class b extends FullCanvas {
         public static final int BALL = 47;
         public static final int POPPED_BALL = 48;
         public static final int BIG_BALL = 49;
+        public static final int DEFLATER = 50;
+        public static final int PUMPER = 51;
+        public static final int POWER_UP_GRAVITY = 52;
+        public static final int POWER_UP_SPEED = 53;
+        public static final int POWER_UP_JUMP = 54;
     }
 
     protected int l;
@@ -146,13 +151,13 @@ public abstract class b extends FullCanvas {
 
     public int SpikeStarsCount;
 
-    public Vec2S[] SpikeStarsTopLeft;
+    public Vec2S[] SpikeStarsBottomLeft;
 
-    public Vec2S[] SpikeStartBottomRight;
+    public Vec2S[] SpikeStartTopRight;
 
-    public short[][] ae;
+    public Vec2S[] ae;
 
-    public short[][] w;
+    public Vec2S[] w;
 
     public Image[] r;
 
@@ -285,10 +290,10 @@ public abstract class b extends FullCanvas {
     }
 
     public void LoadLevelSpikeStars(DataInputStream levelDIS) throws IOException {
-        this.SpikeStarsTopLeft = new Vec2S[this.SpikeStarsCount];
-        this.SpikeStartBottomRight = new Vec2S[this.SpikeStarsCount];
-        this.ae = new short[this.SpikeStarsCount][2];
-        this.w = new short[this.SpikeStarsCount][2];
+        this.SpikeStarsBottomLeft = new Vec2S[this.SpikeStarsCount];
+        this.SpikeStartTopRight = new Vec2S[this.SpikeStarsCount];
+        this.ae = new Vec2S[this.SpikeStarsCount];
+        this.w = new Vec2S[this.SpikeStarsCount];
         this.r = new Image[this.SpikeStarsCount];
         this.an = new Graphics[this.SpikeStarsCount];
         for (byte spike = 0; spike < this.SpikeStarsCount; spike++) {
@@ -296,21 +301,21 @@ public abstract class b extends FullCanvas {
 
             x = (short) levelDIS.read();
             y = (short) levelDIS.read();
-            this.SpikeStarsTopLeft[spike] = new Vec2S(x, y);
+            this.SpikeStarsBottomLeft[spike] = new Vec2S(x, y);
 
             x = (short) levelDIS.read();
             y = (short) levelDIS.read();
-            this.SpikeStartBottomRight[spike] = new Vec2S(x, y);
+            this.SpikeStartTopRight[spike] = new Vec2S(x, y);
 
             x = (short) levelDIS.read();
             y = (short) levelDIS.read();
-            this.ae[spike][0] = (short) levelDIS.read();
-            this.ae[spike][1] = (short) levelDIS.read();
+            this.ae[spike].x = (short) levelDIS.read();
+            this.ae[spike].y = (short) levelDIS.read();
 
             x = (short) levelDIS.read();
             y = (short) levelDIS.read();
-            this.w[spike][0] = x;
-            this.w[spike][1] = y;
+            this.w[spike].x = x;
+            this.w[spike].y = y;
         }
         this.spriteSpikeStar = Image.createImage(24, 24);
         Graphics graphics = this.spriteSpikeStar.getGraphics();
@@ -334,30 +339,30 @@ public abstract class b extends FullCanvas {
 
     public void o() {
         for (byte b1 = 0; b1 < this.SpikeStarsCount; b1++) {
-            short s1 = this.SpikeStarsTopLeft[b1].x;
-            short s2 = this.SpikeStarsTopLeft[b1].y;
-            short s3 = this.w[b1][0];
-            short s4 = this.w[b1][1];
-            this.w[b1][0] = (short) (this.w[b1][0] + this.ae[b1][0]);
-            int n = (this.SpikeStartBottomRight[b1].x - s1 - 2) * 12;
-            int i1 = (this.SpikeStartBottomRight[b1].y - s2 - 2) * 12;
-            if (this.w[b1][0] < 0) {
-                this.w[b1][0] = 0;
-            } else if (this.w[b1][0] > n) {
-                this.w[b1][0] = (short) n;
+            short s1 = this.SpikeStarsBottomLeft[b1].x;
+            short s2 = this.SpikeStarsBottomLeft[b1].y;
+            short s3 = this.w[b1].x;
+            short s4 = this.w[b1].y;
+            this.w[b1].x = (short) (this.w[b1].x + this.ae[b1].x);
+            int n = (this.SpikeStartTopRight[b1].x - s1 - 2) * 12;
+            int i1 = (this.SpikeStartTopRight[b1].y - s2 - 2) * 12;
+            if (this.w[b1].x < 0) {
+                this.w[b1].x = 0;
+            } else if (this.w[b1].x > n) {
+                this.w[b1].x = (short) n;
             }
-            if (this.w[b1][0] == 0 || this.w[b1][0] == n)
-                this.ae[b1][0] = (short) -this.ae[b1][0];
-            this.w[b1][1] = (short) (this.w[b1][1] + this.ae[b1][1]);
-            if (this.w[b1][1] < 0) {
-                this.w[b1][1] = 0;
-            } else if (this.w[b1][1] > i1) {
-                this.w[b1][1] = (short) i1;
+            if (this.w[b1].x == 0 || this.w[b1].x == n)
+                this.ae[b1].x = (short) -this.ae[b1].x;
+            this.w[b1].y = (short) (this.w[b1].y + this.ae[b1].y);
+            if (this.w[b1].y < 0) {
+                this.w[b1].y = 0;
+            } else if (this.w[b1].y > i1) {
+                this.w[b1].y = (short) i1;
             }
-            if (this.w[b1][1] == 0 || this.w[b1][1] == i1)
-                this.ae[b1][1] = (short) (this.ae[b1][1] * -1);
-            short s5 = this.w[b1][0];
-            short s6 = this.w[b1][1];
+            if (this.w[b1].y == 0 || this.w[b1].y == i1)
+                this.ae[b1].y = (short) (this.ae[b1].y * -1);
+            short s5 = this.w[b1].x;
+            short s6 = this.w[b1].y;
             if (s5 < s3) {
                 short s = s5;
                 s5 = s3;
@@ -383,8 +388,8 @@ public abstract class b extends FullCanvas {
 
     public int TestPointInsideSpikeStars(int x, int y) {
         for (byte spike = 0; spike < this.SpikeStarsCount; spike++) {
-            if (x >= this.SpikeStarsTopLeft[spike].x && x < this.SpikeStartBottomRight[spike].x
-                    && y >= this.SpikeStarsTopLeft[spike].y && y < this.SpikeStartBottomRight[spike].y)
+            if (x >= this.SpikeStarsBottomLeft[spike].x && x < this.SpikeStartTopRight[spike].x
+                    && y >= this.SpikeStarsBottomLeft[spike].y && y < this.SpikeStartTopRight[spike].y)
                 return spike;
         }
         return -1;
@@ -405,49 +410,49 @@ public abstract class b extends FullCanvas {
         graphics.setColor(isInWater ? BounceColors.WATER : BounceColors.SKY);
         int j;
         switch (tileId) {
-            case 1 ->
+            case TileIDs.BRICK_WALL ->
                     graphics.drawImage(this.Sprites[SpriteIDs.BRICK_WALL], paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
-            case 0 -> graphics.fillRect(paramInt3, paramInt4, 12, 12);
-            case 2 ->
+            case TileIDs.EMPTY -> graphics.fillRect(paramInt3, paramInt4, 12, 12);
+            case TileIDs.RUBBER_WALL ->
                     graphics.drawImage(this.Sprites[SpriteIDs.RUBBER_WALL], paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
-            case 3 -> {
+            case TileIDs.SPIKES_UP -> {
                 if (isInWater) {
                     graphics.drawImage(this.Sprites[SpriteIDs.SPIKES_WATER_UP], paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
                     break;
                 }
                 graphics.drawImage(this.Sprites[SpriteIDs.SPIKES_UP], paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
             }
-            case 4 -> {
+            case TileIDs.SPIKES_RIGHT -> {
                 if (isInWater) {
                     graphics.drawImage(this.Sprites[SpriteIDs.SPIKES_WATER_RIGHT], paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
                     break;
                 }
                 graphics.drawImage(this.Sprites[SpriteIDs.SPIKES_RIGHT], paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
             }
-            case 5 -> {
+            case TileIDs.SPIKES_DOWN -> {
                 if (isInWater) {
                     graphics.drawImage(this.Sprites[SpriteIDs.SPIKES_WATER_DOWN], paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
                     break;
                 }
                 graphics.drawImage(this.Sprites[SpriteIDs.SPIKES_DOWN], paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
             }
-            case 6 -> {
+            case TileIDs.SPIKES_LEFT -> {
                 if (isInWater) {
                     graphics.drawImage(this.Sprites[SpriteIDs.SPIKES_WATER_LEFT], paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
                     break;
                 }
                 graphics.drawImage(this.Sprites[SpriteIDs.SPIKES_LEFT], paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
             }
-            case 7 ->
+            case TileIDs.CRYSTAL ->
                     graphics.drawImage(this.Sprites[SpriteIDs.CRYSTAL], paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
-            case 8 ->
+            case TileIDs.CRYSTAL_ACTIVE ->
                     graphics.drawImage(this.Sprites[SpriteIDs.CRYSTAL_ACTIVE], paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
             case 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28 -> {
                 graphics.fillRect(paramInt3, paramInt4, 12, 12);
                 graphics.drawImage(this.Sprites[com.nokia.mid.appl.boun.d.a[tileId - 13]], paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
                 graphics.drawImage(this.Sprites[com.nokia.mid.appl.boun.d.b[tileId - 13]], paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
             }
-            case 9 -> {
+            case 9 -> { // TODO: what's this tile???
                 j = (paramInt1 - this.al) * 12;
                 k = (paramInt2 - this.u) * 12;
                 graphics.setClip(paramInt3, paramInt4, 12, 12);
@@ -458,10 +463,10 @@ public abstract class b extends FullCanvas {
             case 10 -> {
                 j = TestPointInsideSpikeStars(paramInt1, paramInt2);
                 if (j != -1) {
-                    k = (paramInt1 - this.SpikeStarsTopLeft[j].x) * 12;
-                    int m = (paramInt2 - this.SpikeStarsTopLeft[j].y) * 12;
-                    int n = this.w[j][0] - k;
-                    int i1 = this.w[j][1] - m;
+                    k = (paramInt1 - this.SpikeStarsBottomLeft[j].x) * 12;
+                    int m = (paramInt2 - this.SpikeStarsBottomLeft[j].y) * 12;
+                    int n = this.w[j].x - k;
+                    int i1 = this.w[j].y - m;
                     if ((n > -36 && n < 12) || (i1 > -36 && i1 < 12)) {
                         this.J.setColor(BounceColors.SKY);
                         this.J.fillRect(0, 0, 12, 12);
@@ -473,7 +478,8 @@ public abstract class b extends FullCanvas {
                     graphics.fillRect(paramInt3, paramInt4, 12, 12);
                 }
             }
-            case 29 -> graphics.drawImage(this.Sprites[SpriteIDs.CRYSTAL_BALL], paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
+            case 29 ->
+                    graphics.drawImage(this.Sprites[SpriteIDs.CRYSTAL_BALL], paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
             case 30 -> {
                 if (isInWater) {
                     graphics.drawImage(this.Sprites[61], paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
@@ -534,29 +540,29 @@ public abstract class b extends FullCanvas {
                 graphics.fillRect(paramInt3, paramInt4, 12, 12);
                 graphics.drawImage(ModifyImage(this.Sprites[50], ImageManipulation.ROTATE_90), paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
             }
-            case 43 -> {
+            case TileIDs.PUMPER_UP -> {
                 graphics.fillRect(paramInt3, paramInt4, 12, 12);
-                graphics.drawImage(this.Sprites[51], paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
+                graphics.drawImage(this.Sprites[SpriteIDs.PUMPER], paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
             }
-            case 44 -> {
+            case TileIDs.PUMPER_RIGHT -> {
                 graphics.fillRect(paramInt3, paramInt4, 12, 12);
-                graphics.drawImage(ModifyImage(this.Sprites[51], ImageManipulation.ROTATE_270), paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
+                graphics.drawImage(ModifyImage(this.Sprites[SpriteIDs.PUMPER], ImageManipulation.ROTATE_270), paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
             }
-            case 45 -> {
+            case TileIDs.PUMPER_DOWN -> {
                 graphics.fillRect(paramInt3, paramInt4, 12, 12);
-                graphics.drawImage(ModifyImage(this.Sprites[51], ImageManipulation.ROTATE_180), paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
+                graphics.drawImage(ModifyImage(this.Sprites[SpriteIDs.PUMPER], ImageManipulation.ROTATE_180), paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
             }
-            case 46 -> {
+            case TileIDs.PUMPER_LEFT -> {
                 graphics.fillRect(paramInt3, paramInt4, 12, 12);
-                graphics.drawImage(ModifyImage(this.Sprites[51], ImageManipulation.ROTATE_90), paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
+                graphics.drawImage(ModifyImage(this.Sprites[SpriteIDs.PUMPER], ImageManipulation.ROTATE_90), paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
             }
-            case 47 -> graphics.drawImage(this.Sprites[52], paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
-            case 48 ->
-                    graphics.drawImage(ModifyImage(this.Sprites[52], ImageManipulation.ROTATE_270), paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
-            case 49 ->
-                    graphics.drawImage(ModifyImage(this.Sprites[52], ImageManipulation.ROTATE_180), paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
-            case 50 ->
-                    graphics.drawImage(ModifyImage(this.Sprites[52], ImageManipulation.ROTATE_90), paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
+            case TileIDs.POWER_UP_GRAVITY_UP -> graphics.drawImage(this.Sprites[SpriteIDs.POWER_UP_GRAVITY], paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
+            case TileIDs.POWER_UP_GRAVITY_RIGHT ->
+                    graphics.drawImage(ModifyImage(this.Sprites[SpriteIDs.POWER_UP_GRAVITY], ImageManipulation.ROTATE_270), paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
+            case TileIDs.POWER_UP_GRAVITY_DOWN ->
+                    graphics.drawImage(ModifyImage(this.Sprites[SpriteIDs.POWER_UP_GRAVITY], ImageManipulation.ROTATE_180), paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
+            case TileIDs.POWER_UP_GRAVITY_LEFT ->
+                    graphics.drawImage(ModifyImage(this.Sprites[SpriteIDs.POWER_UP_GRAVITY], ImageManipulation.ROTATE_90), paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
             case 38 -> graphics.drawImage(this.Sprites[53], paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
             case 51 -> graphics.drawImage(this.Sprites[54], paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
             case 52 ->
@@ -583,7 +589,7 @@ public abstract class b extends FullCanvas {
             m = this.TODO_height;
         for (int n = i; n < k; n++) {
             for (int i1 = j; i1 < m; i1++) {
-                int i2 = this.LevelTiles[i1][n] & 0xFFFFFFBF;
+                int i2 = this.LevelTiles[i1][n] & (~0x40);
                 if (i2 >= 13 && i2 <= 28) {
                     int i3 = (n - this.l) * 12 + paramInt4;
                     int i4 = (i1 - this.k) * 12;
@@ -699,9 +705,9 @@ public abstract class b extends FullCanvas {
         this.Sprites[SpriteIDs.BRICK_WALL] = CreateTiles(ss, 1, 0); // Brick wall
         this.Sprites[SpriteIDs.RUBBER_WALL] = CreateTiles(ss, 1, 2); // Rubber wall
         this.Sprites[SpriteIDs.SPIKES_UP] = CreateTiles(ss, 0, 3, BounceColors.SKY_ALPHA); // Spikes Up
-        this.Sprites[SpriteIDs.SPIKES_DOWN] = ModifyImage(this.Sprites[2], ImageManipulation.FLIP_VERTICAL); // Spikes Down
-        this.Sprites[SpriteIDs.SPIKES_LEFT] = ModifyImage(this.Sprites[2], ImageManipulation.ROTATE_90); // Spikes Left
-        this.Sprites[SpriteIDs.SPIKES_RIGHT] = ModifyImage(this.Sprites[2], ImageManipulation.ROTATE_270); // Spikes Right
+        this.Sprites[SpriteIDs.SPIKES_DOWN] = ModifyImage(this.Sprites[SpriteIDs.SPIKES_UP], ImageManipulation.FLIP_VERTICAL); // Spikes Down
+        this.Sprites[SpriteIDs.SPIKES_LEFT] = ModifyImage(this.Sprites[SpriteIDs.SPIKES_UP], ImageManipulation.ROTATE_90); // Spikes Left
+        this.Sprites[SpriteIDs.SPIKES_RIGHT] = ModifyImage(this.Sprites[SpriteIDs.SPIKES_UP], ImageManipulation.ROTATE_270); // Spikes Right
         this.Sprites[SpriteIDs.SPIKES_WATER_UP] = CreateTiles(ss, 0, 3, BounceColors.WATER_ALPHA);
         this.Sprites[SpriteIDs.SPIKES_WATER_DOWN] = ModifyImage(this.Sprites[6], ImageManipulation.FLIP_VERTICAL);
         this.Sprites[SpriteIDs.SPIKES_WATER_LEFT] = ModifyImage(this.Sprites[6], ImageManipulation.ROTATE_90);
@@ -746,11 +752,11 @@ public abstract class b extends FullCanvas {
         this.Sprites[SpriteIDs.BALL] = CreateTiles(ss, 2, 0);
         this.Sprites[SpriteIDs.POPPED_BALL] = CreateTiles(ss, 0, 1);
         this.Sprites[SpriteIDs.BIG_BALL] = Mirror16x16Tile(CreateTiles(ss, 3, 0));
-        this.Sprites[50] = CreateTiles(ss, 3, 1);
-        this.Sprites[51] = CreateTiles(ss, 2, 4);
-        this.Sprites[52] = CreateTiles(ss, 3, 2);
-        this.Sprites[53] = CreateTiles(ss, 1, 1);
-        this.Sprites[54] = CreateTiles(ss, 2, 2);
+        this.Sprites[SpriteIDs.DEFLATER] = CreateTiles(ss, 3, 1);
+        this.Sprites[SpriteIDs.PUMPER] = CreateTiles(ss, 2, 4);
+        this.Sprites[SpriteIDs.POWER_UP_GRAVITY] = CreateTiles(ss, 3, 2);
+        this.Sprites[SpriteIDs.POWER_UP_SPEED] = CreateTiles(ss, 1, 1);
+        this.Sprites[SpriteIDs.POWER_UP_JUMP] = CreateTiles(ss, 2, 2);
         this.Sprites[55] = CreateTiles(ss, 0, 0, BounceColors.SKY_ALPHA);
         this.Sprites[56] = ModifyImage(this.Sprites[55], ImageManipulation.ROTATE_90);
         this.Sprites[57] = ModifyImage(this.Sprites[55], ImageManipulation.ROTATE_180);
@@ -779,12 +785,13 @@ public abstract class b extends FullCanvas {
 
     public static Image CreateTiles(Image paramImage, int tileX, int tileY, int ARGB) {
         Image image = DirectUtils.createImage(12, 12, ARGB);
-    /*if (image == null) { // TODO: unused
-      image = Image.createImage(12, 12);
-      Graphics graphics1 = image.getGraphics();
-      graphics1.setColor(ARGB);
-      graphics1.fillRect(0, 0, 12, 12);
-    }*/
+        if (image == null) {
+            image = Image.createImage(12, 12);
+            Graphics graphics1 = image.getGraphics();
+            graphics1.setColor(ARGB);
+            graphics1.fillRect(0, 0, 12, 12);
+        }
+
         Graphics graphics = image.getGraphics();
         graphics.drawImage(paramImage, -tileX * 12, -tileY * 12, Graphics.TOP | Graphics.LEFT);
         return image;
