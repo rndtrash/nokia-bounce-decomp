@@ -9,7 +9,4 @@ public final class Vec2S {
         this.y = y;
     }
 
-    public Vec2S() {
-        this((short) 0, (short) 0);
-    }
 }

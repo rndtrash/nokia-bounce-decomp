@@ -100,7 +100,7 @@ public class e extends b {
         AddScore();
         this.p = 120;
         this.y = true;
-        if (this.game.e != this.s && this.game.b != this.S)
+        if (this.game.e != this.TODO_ballInitialX && this.game.b != this.TODO_ballInitialY)
             this.LevelTiles[this.game.b][this.game.e] = (short) (0x8 | this.LevelTiles[this.game.b][this.game.e] & 0x40);
         a(paramInt1, paramInt2, this.game.A, this.game.a, this.game.g);
         synchronized (this.aq) {
@@ -118,13 +118,13 @@ public class e extends b {
         this.HoopsScored = 0;
         this.p = 120;
         this.y = true;
-        a(this.s * 12 + 6, this.S * 12 + 6, this.BallSize, 0, 0);
-        this.aq.a(this.s, this.S);
+        a(this.TODO_ballInitialX * 12 + 6, this.TODO_ballInitialY * 12 + 6, this.BallSize, 0, 0);
+        this.aq.a(this.TODO_ballInitialX, this.TODO_ballInitialY);
         this.T = true;
     }
 
-    public void a(int paramInt1, int paramInt2, int paramInt3, int paramInt4, int paramInt5) {
-        this.aq = new f(paramInt1, paramInt2, paramInt3, this);
+    public void a(int paramInt1, int paramInt2, int ballSize, int paramInt4, int paramInt5) {
+        this.aq = new f(paramInt1, paramInt2, ballSize, this);
         this.aq.l = paramInt4;
         this.aq.o = paramInt5;
         this.l = 0;
@@ -133,7 +133,7 @@ public class e extends b {
     }
 
     public void e() {
-        int i = this.aq.s - 64;
+        int i = this.aq.TODO_unkX - 64;
         if (i < 0) {
             i = 0;
         } else if (i > this.TODO_width * 12 - 156) {
@@ -143,9 +143,9 @@ public class e extends b {
         this.v = this.l * 12 - i;
         this.Z = 156;
         this.G = this.l + 13;
-        while (this.aq.r - 6 < this.k * 12)
+        while (this.aq.TODO_unkY - 6 < this.k * 12)
             this.k -= 7;
-        while (this.aq.r + 6 > this.k * 12 + 96)
+        while (this.aq.TODO_unkY + 6 > this.k * 12 + 96)
             this.k += 7;
         f();
     }
@@ -169,7 +169,7 @@ public class e extends b {
             }
         }
         a(this.X, this.v);
-        CreateTiles(this.X, this.aq.s, this.aq.r, this.aq.p, this.v);
+        CreateTiles(this.X, this.aq.TODO_unkX, this.aq.TODO_unkY, this.aq.p, this.v);
         this.X.setClip(0, 0, 128, 128);
         if (this.y) {
             this.X.setColor(0x0853aa); // Blue background
@@ -209,8 +209,8 @@ public class e extends b {
     public void a(Graphics paramGraphics, int paramInt) {
         if (this.aq == null)
             return;
-        int i = this.aq.s - this.l * 12;
-        int j = this.aq.r - this.k * 12;
+        int i = this.aq.TODO_unkX - this.l * 12;
+        int j = this.aq.TODO_unkY - this.k * 12;
         if (this.aq.z == 2) {
             paramGraphics.drawImage(this.aq.spritePoppedBall, i - 6 + paramInt, j - 6, 20);
         } else {
@@ -259,7 +259,7 @@ public class e extends b {
             this.p--;
 
         synchronized (this.aq) {
-            if (this.aq.r - 6 < this.k * 12 || this.aq.r + 6 > this.k * 12 + 96) {
+            if (this.aq.TODO_unkY - 6 < this.k * 12 || this.aq.TODO_unkY + 6 > this.k * 12 + 96) {
                 e();
             } else {
                 this.aq.b();
@@ -280,20 +280,20 @@ public class e extends b {
                 this.aq.b = k;
             }
             if (this.DynThornsCount != 0)
-                o();
+                UpdateDynThorns();
             if (this.HoopsScored == this.HoopsTotal)
                 this.TODO_ExitUnlocked = true;
-            if (this.TODO_ExitUnlocked && this.z && (this.W + 1) * 12 > m() && this.W * 12 < g()) {
+            if (this.TODO_ExitUnlocked && this.z && (this.exitX + 1) * 12 > m() && this.exitX * 12 < g()) {
                 if (this.M) {
                     this.z = false;
                     this.TODO_ExitUnlocked = false;
                 } else {
                     h();
                 }
-                this.LevelTiles[this.u][this.al] = (short) (this.LevelTiles[this.u][this.al] | 0x80);
-                this.LevelTiles[this.u][this.al + 1] = (short) (this.LevelTiles[this.u][this.al + 1] | 0x80);
-                this.LevelTiles[this.u + 1][this.al] = (short) (this.LevelTiles[this.u + 1][this.al] | 0x80);
-                this.LevelTiles[this.u + 1][this.al + 1] = (short) (this.LevelTiles[this.u + 1][this.al + 1] | 0x80);
+                this.LevelTiles[this.tileY][this.tileX] = (short) (this.LevelTiles[this.tileY][this.tileX] | 0x80);
+                this.LevelTiles[this.tileY][this.tileX + 1] = (short) (this.LevelTiles[this.tileY][this.tileX + 1] | 0x80);
+                this.LevelTiles[this.tileY + 1][this.tileX] = (short) (this.LevelTiles[this.tileY + 1][this.tileX] | 0x80);
+                this.LevelTiles[this.tileY + 1][this.tileX + 1] = (short) (this.LevelTiles[this.tileY + 1][this.tileX + 1] | 0x80);
             }
             this.boostTimer = 0;
             if (this.aq.TODO_somePowerUp1 != 0 || this.aq.powerUpGravity != 0 || this.aq.TODO_somePowerUp3 != 0) {
@@ -307,7 +307,7 @@ public class e extends b {
                     this.y = true;
             }
         }
-        LoadSpriteSheet(this.aq.s);
+        LoadSpriteSheet(this.aq.TODO_unkX);
         q();
         repaint();
         if (this.e) {

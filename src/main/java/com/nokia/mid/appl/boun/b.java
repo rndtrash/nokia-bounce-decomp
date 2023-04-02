@@ -128,18 +128,18 @@ public abstract class b extends FullCanvas {
 
     public boolean d;
 
-    protected int s;
+    protected int TODO_ballInitialX;
 
-    protected int S;
+    protected int TODO_ballInitialY;
 
     /**
      * Either 12 (small) or 16 (big)
      */
     public int BallSize;
 
-    protected int W;
+    protected int exitX;
 
-    protected int V;
+    protected int exitY;
 
     public short[][] LevelTiles;
 
@@ -169,9 +169,9 @@ public abstract class b extends FullCanvas {
 
     public Image imageHoop;
 
-    public int al;
+    public int tileX;
 
-    public int u;
+    public int tileY;
 
     public Image aa;
 
@@ -226,17 +226,17 @@ public abstract class b extends FullCanvas {
         try {
             levelStream = getClass().getResourceAsStream("/levels/J2MElvl." + levelName);
             levelDIS = new DataInputStream(levelStream);
-            this.s = levelDIS.read();
-            this.S = levelDIS.read();
+            this.TODO_ballInitialX = levelDIS.read();
+            this.TODO_ballInitialY = levelDIS.read();
             int isBigBall = levelDIS.read();
             if (isBigBall == 0) {
                 this.BallSize = 12;
             } else {
                 this.BallSize = 16;
             }
-            this.W = levelDIS.read();
-            this.V = levelDIS.read();
-            CreateTiles(this.W, this.V, this.Sprites[SpriteIDs.EXIT]);
+            this.exitX = levelDIS.read();
+            this.exitY = levelDIS.read();
+            CreateTiles(this.exitX, this.exitY, this.Sprites[SpriteIDs.EXIT]);
             this.HoopsTotal = levelDIS.read();
             this.TODO_width = levelDIS.read();
             this.TODO_height = levelDIS.read();
@@ -337,32 +337,32 @@ public abstract class b extends FullCanvas {
         Runtime.getRuntime().gc();
     }
 
-    public void o() {
-        for (byte b1 = 0; b1 < this.DynThornsCount; b1++) {
-            short s1 = this.DynThornsBottomLeft[b1].x;
-            short s2 = this.DynThornsBottomLeft[b1].y;
-            short s3 = this.w[b1].x;
-            short s4 = this.w[b1].y;
-            this.w[b1].x = (short) (this.w[b1].x + this.ae[b1].x);
-            int n = (this.DynThornsTopRight[b1].x - s1 - 2) * 12;
-            int i1 = (this.DynThornsTopRight[b1].y - s2 - 2) * 12;
-            if (this.w[b1].x < 0) {
-                this.w[b1].x = 0;
-            } else if (this.w[b1].x > n) {
-                this.w[b1].x = (short) n;
+    public void UpdateDynThorns() {
+        for (byte thorn = 0; thorn < this.DynThornsCount; thorn++) {
+            short s1 = this.DynThornsBottomLeft[thorn].x;
+            short s2 = this.DynThornsBottomLeft[thorn].y;
+            short s3 = this.w[thorn].x;
+            short s4 = this.w[thorn].y;
+            this.w[thorn].x = (short) (this.w[thorn].x + this.ae[thorn].x);
+            int n = (this.DynThornsTopRight[thorn].x - s1 - 2) * 12;
+            int i1 = (this.DynThornsTopRight[thorn].y - s2 - 2) * 12;
+            if (this.w[thorn].x < 0) {
+                this.w[thorn].x = 0;
+            } else if (this.w[thorn].x > n) {
+                this.w[thorn].x = (short) n;
             }
-            if (this.w[b1].x == 0 || this.w[b1].x == n)
-                this.ae[b1].x = (short) -this.ae[b1].x;
-            this.w[b1].y = (short) (this.w[b1].y + this.ae[b1].y);
-            if (this.w[b1].y < 0) {
-                this.w[b1].y = 0;
-            } else if (this.w[b1].y > i1) {
-                this.w[b1].y = (short) i1;
+            if (this.w[thorn].x == 0 || this.w[thorn].x == n)
+                this.ae[thorn].x = (short) -this.ae[thorn].x;
+            this.w[thorn].y = (short) (this.w[thorn].y + this.ae[thorn].y);
+            if (this.w[thorn].y < 0) {
+                this.w[thorn].y = 0;
+            } else if (this.w[thorn].y > i1) {
+                this.w[thorn].y = (short) i1;
             }
-            if (this.w[b1].y == 0 || this.w[b1].y == i1)
-                this.ae[b1].y = (short) (this.ae[b1].y * -1);
-            short s5 = this.w[b1].x;
-            short s6 = this.w[b1].y;
+            if (this.w[thorn].y == 0 || this.w[thorn].y == i1)
+                this.ae[thorn].y = (short) (this.ae[thorn].y * -1);
+            short s5 = this.w[thorn].x;
+            short s6 = this.w[thorn].y;
             if (s5 < s3) {
                 short s = s5;
                 s5 = s3;
@@ -453,8 +453,8 @@ public abstract class b extends FullCanvas {
                 graphics.drawImage(this.Sprites[com.nokia.mid.appl.boun.d.b[tileId - 13]], paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
             }
             case 9 -> { // TODO: what's this tile???
-                j = (paramInt1 - this.al) * 12;
-                k = (paramInt2 - this.u) * 12;
+                j = (paramInt1 - this.tileX) * 12;
+                k = (paramInt2 - this.tileY) * 12;
                 graphics.setClip(paramInt3, paramInt4, 12, 12);
                 graphics.drawImage(this.aa, paramInt3 - j, paramInt4 - k, Graphics.TOP | Graphics.LEFT);
                 graphics.setClip(0, 0, this.E.getWidth(), this.E.getHeight());
@@ -806,9 +806,9 @@ public abstract class b extends FullCanvas {
         return image;
     }
 
-    public void CreateTiles(int paramInt1, int paramInt2, Image paramImage) {
-        this.al = paramInt1;
-        this.u = paramInt2;
+    public void CreateTiles(int tileX, int tileY, Image paramImage) {
+        this.tileX = tileX;
+        this.tileY = tileY;
         this.o = paramImage;
         this.aa = Image.createImage(24, 24);
         this.b = 0;

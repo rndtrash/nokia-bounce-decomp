@@ -366,8 +366,8 @@ public class BounceGame implements CommandListener {
                     dataOutputStream.writeInt(this.v.score);
                     dataOutputStream.writeInt(this.v.l);
                     dataOutputStream.writeInt(this.v.k);
-                    dataOutputStream.writeInt(this.v.aq.s);
-                    dataOutputStream.writeInt(this.v.aq.r);
+                    dataOutputStream.writeInt(this.v.aq.TODO_unkX);
+                    dataOutputStream.writeInt(this.v.aq.TODO_unkY);
                     dataOutputStream.writeInt(this.v.aq.l);
                     dataOutputStream.writeInt(this.v.aq.o);
                     dataOutputStream.writeInt(0);

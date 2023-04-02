@@ -5,9 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="81290dd7-9448-4b41-b763-4f25acb6bea8" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/nokia/mid/appl/boun/BounceGame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/nokia/mid/appl/boun/BounceGame.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/nokia/mid/appl/boun/Vec2S.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/nokia/mid/appl/boun/Vec2S.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/nokia/mid/appl/boun/b.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/nokia/mid/appl/boun/b.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/nokia/mid/appl/boun/e.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/nokia/mid/appl/boun/e.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/nokia/mid/appl/boun/f.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/nokia/mid/appl/boun/f.java" afterDir="false" />
