@@ -14,7 +14,9 @@ dependencies {
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
 
     //implementation files('libs/nokia5100.jar')
-    implementation files('libs/nokia_s40.jar')
+    //implementation files('libs/nokia_s40.jar')
+
+    implementation project(':nokia-wrapper')
 }
 
 test {

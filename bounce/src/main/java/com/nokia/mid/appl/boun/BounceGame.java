@@ -1,6 +1,7 @@
 package com.nokia.mid.appl.boun;
 
-import javax.microedition.lcdui.*;
+import javax.microedition.lcdui.Display;
+
 import javax.microedition.rms.RecordStore;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

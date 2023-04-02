@@ -1,2 +1,3 @@
 rootProject.name = 'Bounce'
-
+include 'nokia-wrapper'
+include 'bounce'

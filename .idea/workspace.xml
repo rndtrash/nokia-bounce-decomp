@@ -5,12 +5,44 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="81290dd7-9448-4b41-b763-4f25acb6bea8" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/nokia/mid/appl/boun/BounceGame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/nokia/mid/appl/boun/BounceGame.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/nokia/mid/appl/boun/Vec2S.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/nokia/mid/appl/boun/Vec2S.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/nokia/mid/appl/boun/b.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/nokia/mid/appl/boun/b.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/nokia/mid/appl/boun/e.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/nokia/mid/appl/boun/e.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/nokia/mid/appl/boun/f.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/nokia/mid/appl/boun/f.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/bounce/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/settings.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/nokia/mid/appl/boun/Bounce.java" beforeDir="false" afterPath="$PROJECT_DIR$/bounce/src/main/java/com/nokia/mid/appl/boun/Bounce.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/nokia/mid/appl/boun/BounceGame.java" beforeDir="false" afterPath="$PROJECT_DIR$/bounce/src/main/java/com/nokia/mid/appl/boun/BounceGame.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/nokia/mid/appl/boun/BounceTimer.java" beforeDir="false" afterPath="$PROJECT_DIR$/bounce/src/main/java/com/nokia/mid/appl/boun/BounceTimer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/nokia/mid/appl/boun/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/bounce/src/main/java/com/nokia/mid/appl/boun/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/nokia/mid/appl/boun/TileIDs.java" beforeDir="false" afterPath="$PROJECT_DIR$/bounce/src/main/java/com/nokia/mid/appl/boun/TileIDs.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/nokia/mid/appl/boun/Translation.java" beforeDir="false" afterPath="$PROJECT_DIR$/bounce/src/main/java/com/nokia/mid/appl/boun/Translation.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/nokia/mid/appl/boun/Vec2S.java" beforeDir="false" afterPath="$PROJECT_DIR$/bounce/src/main/java/com/nokia/mid/appl/boun/Vec2S.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/nokia/mid/appl/boun/b.java" beforeDir="false" afterPath="$PROJECT_DIR$/bounce/src/main/java/com/nokia/mid/appl/boun/b.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/nokia/mid/appl/boun/d.java" beforeDir="false" afterPath="$PROJECT_DIR$/bounce/src/main/java/com/nokia/mid/appl/boun/d.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/nokia/mid/appl/boun/e.java" beforeDir="false" afterPath="$PROJECT_DIR$/bounce/src/main/java/com/nokia/mid/appl/boun/e.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/nokia/mid/appl/boun/f.java" beforeDir="false" afterPath="$PROJECT_DIR$/bounce/src/main/java/com/nokia/mid/appl/boun/f.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/META-INF/MANIFEST.MF" beforeDir="false" afterPath="$PROJECT_DIR$/bounce/src/main/resources/META-INF/MANIFEST.MF" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/icons/bouncesplash.png" beforeDir="false" afterPath="$PROJECT_DIR$/bounce/src/main/resources/icons/bouncesplash.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/icons/icon.png" beforeDir="false" afterPath="$PROJECT_DIR$/bounce/src/main/resources/icons/icon.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/icons/nokiagames.png" beforeDir="false" afterPath="$PROJECT_DIR$/bounce/src/main/resources/icons/nokiagames.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/icons/objects_nm.png" beforeDir="false" afterPath="$PROJECT_DIR$/bounce/src/main/resources/icons/objects_nm.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/lang.th-TH" beforeDir="false" afterPath="$PROJECT_DIR$/bounce/src/main/resources/lang.th-TH" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/lang.xx" beforeDir="false" afterPath="$PROJECT_DIR$/bounce/src/main/resources/lang.xx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/lang.zh-CN" beforeDir="false" afterPath="$PROJECT_DIR$/bounce/src/main/resources/lang.zh-CN" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/lang.zh-TW" beforeDir="false" afterPath="$PROJECT_DIR$/bounce/src/main/resources/lang.zh-TW" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/levels/J2MElvl.001" beforeDir="false" afterPath="$PROJECT_DIR$/bounce/src/main/resources/levels/J2MElvl.001" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/levels/J2MElvl.002" beforeDir="false" afterPath="$PROJECT_DIR$/bounce/src/main/resources/levels/J2MElvl.002" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/levels/J2MElvl.003" beforeDir="false" afterPath="$PROJECT_DIR$/bounce/src/main/resources/levels/J2MElvl.003" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/levels/J2MElvl.004" beforeDir="false" afterPath="$PROJECT_DIR$/bounce/src/main/resources/levels/J2MElvl.004" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/levels/J2MElvl.005" beforeDir="false" afterPath="$PROJECT_DIR$/bounce/src/main/resources/levels/J2MElvl.005" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/levels/J2MElvl.006" beforeDir="false" afterPath="$PROJECT_DIR$/bounce/src/main/resources/levels/J2MElvl.006" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/levels/J2MElvl.007" beforeDir="false" afterPath="$PROJECT_DIR$/bounce/src/main/resources/levels/J2MElvl.007" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/levels/J2MElvl.008" beforeDir="false" afterPath="$PROJECT_DIR$/bounce/src/main/resources/levels/J2MElvl.008" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/levels/J2MElvl.009" beforeDir="false" afterPath="$PROJECT_DIR$/bounce/src/main/resources/levels/J2MElvl.009" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/levels/J2MElvl.010" beforeDir="false" afterPath="$PROJECT_DIR$/bounce/src/main/resources/levels/J2MElvl.010" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/levels/J2MElvl.011" beforeDir="false" afterPath="$PROJECT_DIR$/bounce/src/main/resources/levels/J2MElvl.011" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/sounds/pickup.ott" beforeDir="false" afterPath="$PROJECT_DIR$/bounce/src/main/resources/sounds/pickup.ott" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/sounds/pop.ott" beforeDir="false" afterPath="$PROJECT_DIR$/bounce/src/main/resources/sounds/pop.ott" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/sounds/up.ott" beforeDir="false" afterPath="$PROJECT_DIR$/bounce/src/main/resources/sounds/up.ott" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,8 +85,14 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="jar://$PROJECT_DIR$/../../Program Files/Eclipse Adoptium/jdk-17.0.6.10-hotspot/lib/src.zip!/java.desktop/java/awt/Color.java" root0="SKIP_INSPECTION" />
+  </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="ProjectErrors" />
   </component>
   <component name="ProjectId" id="2LB9vjfKsIY5MR4jeAb46sKvDCC" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
@@ -64,22 +102,22 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;jdk.selected.JAVA_MODULE&quot;: &quot;17&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/dev/nokia-bounce-decomp&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Artifacts&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "nokia-api-wrapper",
+    "ignore.virus.scanning.warn.message": "true",
+    "jdk.selected.JAVA_MODULE": "17",
+    "last_opened_file_path": "C:/dev/nokia-bounce-decomp/nokia-wrapper",
+    "project.structure.last.edited": "Artifacts",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "run.code.analysis.last.selected.profile": "pProject Default"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="com.nokia.mid.impl.isa.ui" />
@@ -88,7 +126,11 @@
       <recent name="com.nokia.mid.ui" />
       <recent name="javax.microedition.media" />
     </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\dev\nokia-bounce-decomp\nokia-wrapper" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\dev\nokia-bounce-decomp\bounce" />
       <recent name="C:\dev\IdeaProjects\Bounce\src\main\resources" />
     </key>
   </component>
