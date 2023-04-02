@@ -344,7 +344,7 @@ public class BounceGame implements CommandListener {
             byte b2;
             byte b3;
             byte b4;
-            byte spike;
+            byte thorn;
             switch (what) {
                 case 1 -> dataOutputStream.writeByte(this.MaxLevels);
                 case 2 -> dataOutputStream.writeInt(this.HighScore);
@@ -397,12 +397,12 @@ public class BounceGame implements CommandListener {
                         dataOutputStream.writeByte(arrayOfInt[b4][2]);
                     }
                     arrayOfInt = null;
-                    dataOutputStream.writeByte(this.v.SpikeStarsCount);
-                    for (spike = 0; spike < this.v.SpikeStarsCount; spike++) {
-                        dataOutputStream.writeShort(this.v.w[spike].x);
-                        dataOutputStream.writeShort(this.v.w[spike].y);
-                        dataOutputStream.writeShort(this.v.ae[spike].x);
-                        dataOutputStream.writeShort(this.v.ae[spike].y);
+                    dataOutputStream.writeByte(this.v.DynThornsCount);
+                    for (thorn = 0; thorn < this.v.DynThornsCount; thorn++) {
+                        dataOutputStream.writeShort(this.v.w[thorn].x);
+                        dataOutputStream.writeShort(this.v.w[thorn].y);
+                        dataOutputStream.writeShort(this.v.ae[thorn].x);
+                        dataOutputStream.writeShort(this.v.ae[thorn].y);
                     }
                     dataOutputStream.writeLong(RECORD_STORE_MAGIC);
                 }

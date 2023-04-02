@@ -279,7 +279,7 @@ public class e extends b {
                 this.aq.c = j;
                 this.aq.b = k;
             }
-            if (this.SpikeStarsCount != 0)
+            if (this.DynThornsCount != 0)
                 o();
             if (this.HoopsScored == this.HoopsTotal)
                 this.TODO_ExitUnlocked = true;

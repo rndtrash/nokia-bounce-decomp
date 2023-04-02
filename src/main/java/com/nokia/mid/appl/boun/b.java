@@ -42,15 +42,15 @@ public abstract class b extends FullCanvas {
         public static final int BRICK_WALL = 0;
         public static final int RUBBER_WALL = 1;
 
-        public static final int SPIKES_UP = 2;
-        public static final int SPIKES_DOWN = 3;
-        public static final int SPIKES_LEFT = 4;
-        public static final int SPIKES_RIGHT = 5;
+        public static final int THORNS_UP = 2;
+        public static final int THORNS_DOWN = 3;
+        public static final int THORNS_LEFT = 4;
+        public static final int THORNS_RIGHT = 5;
 
-        public static final int SPIKES_WATER_UP = 6;
-        public static final int SPIKES_WATER_DOWN = 7;
-        public static final int SPIKES_WATER_LEFT = 8;
-        public static final int SPIKES_WATER_RIGHT = 9;
+        public static final int THORNS_WATER_UP = 6;
+        public static final int THORNS_WATER_DOWN = 7;
+        public static final int THORNS_WATER_LEFT = 8;
+        public static final int THORNS_WATER_RIGHT = 9;
 
         /**
          * A.K.A. Checkpoint
@@ -88,7 +88,7 @@ public abstract class b extends FullCanvas {
          */
         public static final int CRYSTAL_BALL = 45;
 
-        public static final int SPIKE_STAR_QUARTER = 46;
+        public static final int DYN_THORN_QUARTER = 46;
 
         public static final int BALL = 47;
         public static final int POPPED_BALL = 48;
@@ -149,11 +149,11 @@ public abstract class b extends FullCanvas {
 
     public int HoopsTotal;
 
-    public int SpikeStarsCount;
+    public int DynThornsCount;
 
-    public Vec2S[] SpikeStarsBottomLeft;
+    public Vec2S[] DynThornsBottomLeft;
 
-    public Vec2S[] SpikeStartTopRight;
+    public Vec2S[] DynThornsTopRight;
 
     public Vec2S[] ae;
 
@@ -163,7 +163,7 @@ public abstract class b extends FullCanvas {
 
     public Graphics[] an;
 
-    public Image spriteSpikeStar;
+    public Image spriteDynThorn;
 
     public Image imageBall;
 
@@ -245,9 +245,9 @@ public abstract class b extends FullCanvas {
                 for (byte j = 0; j < this.TODO_width; j++)
                     this.LevelTiles[i][j] = (short) levelDIS.read();
             }
-            this.SpikeStarsCount = levelDIS.read();
-            if (this.SpikeStarsCount != 0)
-                LoadLevelSpikeStars(levelDIS);
+            this.DynThornsCount = levelDIS.read();
+            if (this.DynThornsCount != 0)
+                LoadLevelDynThorns(levelDIS);
             levelDIS.close();
         } catch (IOException iOException) {
         }
@@ -289,45 +289,45 @@ public abstract class b extends FullCanvas {
         return image;
     }
 
-    public void LoadLevelSpikeStars(DataInputStream levelDIS) throws IOException {
-        this.SpikeStarsBottomLeft = new Vec2S[this.SpikeStarsCount];
-        this.SpikeStartTopRight = new Vec2S[this.SpikeStarsCount];
-        this.ae = new Vec2S[this.SpikeStarsCount];
-        this.w = new Vec2S[this.SpikeStarsCount];
-        this.r = new Image[this.SpikeStarsCount];
-        this.an = new Graphics[this.SpikeStarsCount];
-        for (byte spike = 0; spike < this.SpikeStarsCount; spike++) {
+    public void LoadLevelDynThorns(DataInputStream levelDIS) throws IOException {
+        this.DynThornsBottomLeft = new Vec2S[this.DynThornsCount];
+        this.DynThornsTopRight = new Vec2S[this.DynThornsCount];
+        this.ae = new Vec2S[this.DynThornsCount];
+        this.w = new Vec2S[this.DynThornsCount];
+        this.r = new Image[this.DynThornsCount];
+        this.an = new Graphics[this.DynThornsCount];
+        for (byte thorn = 0; thorn < this.DynThornsCount; thorn++) {
             short x, y;
 
             x = (short) levelDIS.read();
             y = (short) levelDIS.read();
-            this.SpikeStarsBottomLeft[spike] = new Vec2S(x, y);
+            this.DynThornsBottomLeft[thorn] = new Vec2S(x, y);
 
             x = (short) levelDIS.read();
             y = (short) levelDIS.read();
-            this.SpikeStartTopRight[spike] = new Vec2S(x, y);
+            this.DynThornsTopRight[thorn] = new Vec2S(x, y);
 
             x = (short) levelDIS.read();
             y = (short) levelDIS.read();
-            this.ae[spike].x = (short) levelDIS.read();
-            this.ae[spike].y = (short) levelDIS.read();
+            this.ae[thorn].x = (short) levelDIS.read();
+            this.ae[thorn].y = (short) levelDIS.read();
 
             x = (short) levelDIS.read();
             y = (short) levelDIS.read();
-            this.w[spike].x = x;
-            this.w[spike].y = y;
+            this.w[thorn].x = x;
+            this.w[thorn].y = y;
         }
-        this.spriteSpikeStar = Image.createImage(24, 24);
-        Graphics graphics = this.spriteSpikeStar.getGraphics();
-        graphics.drawImage(this.Sprites[SpriteIDs.SPIKE_STAR_QUARTER], 0, 0, Graphics.TOP | Graphics.LEFT);
-        graphics.drawImage(ModifyImage(this.Sprites[SpriteIDs.SPIKE_STAR_QUARTER], ImageManipulation.FLIP_HORIZONTAL), 12, 0, Graphics.TOP | Graphics.LEFT);
-        graphics.drawImage(ModifyImage(this.Sprites[SpriteIDs.SPIKE_STAR_QUARTER], ImageManipulation.ROTATE_180), 12, 12, Graphics.TOP | Graphics.LEFT);
-        graphics.drawImage(ModifyImage(this.Sprites[SpriteIDs.SPIKE_STAR_QUARTER], ImageManipulation.FLIP_VERTICAL), 0, 12, Graphics.TOP | Graphics.LEFT);
+        this.spriteDynThorn = Image.createImage(24, 24);
+        Graphics graphics = this.spriteDynThorn.getGraphics();
+        graphics.drawImage(this.Sprites[SpriteIDs.DYN_THORN_QUARTER], 0, 0, Graphics.TOP | Graphics.LEFT);
+        graphics.drawImage(ModifyImage(this.Sprites[SpriteIDs.DYN_THORN_QUARTER], ImageManipulation.FLIP_HORIZONTAL), 12, 0, Graphics.TOP | Graphics.LEFT);
+        graphics.drawImage(ModifyImage(this.Sprites[SpriteIDs.DYN_THORN_QUARTER], ImageManipulation.ROTATE_180), 12, 12, Graphics.TOP | Graphics.LEFT);
+        graphics.drawImage(ModifyImage(this.Sprites[SpriteIDs.DYN_THORN_QUARTER], ImageManipulation.FLIP_VERTICAL), 0, 12, Graphics.TOP | Graphics.LEFT);
         graphics = null;
     }
 
     public void RunGarbageCollector() {
-        for (byte i = 0; i < this.SpikeStarsCount; i++) {
+        for (byte i = 0; i < this.DynThornsCount; i++) {
             this.r[i] = null;
             this.an[i] = null;
         }
@@ -338,14 +338,14 @@ public abstract class b extends FullCanvas {
     }
 
     public void o() {
-        for (byte b1 = 0; b1 < this.SpikeStarsCount; b1++) {
-            short s1 = this.SpikeStarsBottomLeft[b1].x;
-            short s2 = this.SpikeStarsBottomLeft[b1].y;
+        for (byte b1 = 0; b1 < this.DynThornsCount; b1++) {
+            short s1 = this.DynThornsBottomLeft[b1].x;
+            short s2 = this.DynThornsBottomLeft[b1].y;
             short s3 = this.w[b1].x;
             short s4 = this.w[b1].y;
             this.w[b1].x = (short) (this.w[b1].x + this.ae[b1].x);
-            int n = (this.SpikeStartTopRight[b1].x - s1 - 2) * 12;
-            int i1 = (this.SpikeStartTopRight[b1].y - s2 - 2) * 12;
+            int n = (this.DynThornsTopRight[b1].x - s1 - 2) * 12;
+            int i1 = (this.DynThornsTopRight[b1].y - s2 - 2) * 12;
             if (this.w[b1].x < 0) {
                 this.w[b1].x = 0;
             } else if (this.w[b1].x > n) {
@@ -386,11 +386,11 @@ public abstract class b extends FullCanvas {
         }
     }
 
-    public int TestPointInsideSpikeStars(int x, int y) {
-        for (byte spike = 0; spike < this.SpikeStarsCount; spike++) {
-            if (x >= this.SpikeStarsBottomLeft[spike].x && x < this.SpikeStartTopRight[spike].x
-                    && y >= this.SpikeStarsBottomLeft[spike].y && y < this.SpikeStartTopRight[spike].y)
-                return spike;
+    public int TestPointInsideDynThorns(int x, int y) {
+        for (byte thorn = 0; thorn < this.DynThornsCount; thorn++) {
+            if (x >= this.DynThornsBottomLeft[thorn].x && x < this.DynThornsTopRight[thorn].x
+                    && y >= this.DynThornsBottomLeft[thorn].y && y < this.DynThornsTopRight[thorn].y)
+                return thorn;
         }
         return -1;
     }
@@ -415,33 +415,33 @@ public abstract class b extends FullCanvas {
             case TileIDs.EMPTY -> graphics.fillRect(paramInt3, paramInt4, 12, 12);
             case TileIDs.RUBBER_WALL ->
                     graphics.drawImage(this.Sprites[SpriteIDs.RUBBER_WALL], paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
-            case TileIDs.SPIKES_UP -> {
+            case TileIDs.THORNS_UP -> {
                 if (isInWater) {
-                    graphics.drawImage(this.Sprites[SpriteIDs.SPIKES_WATER_UP], paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
+                    graphics.drawImage(this.Sprites[SpriteIDs.THORNS_WATER_UP], paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
                     break;
                 }
-                graphics.drawImage(this.Sprites[SpriteIDs.SPIKES_UP], paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
+                graphics.drawImage(this.Sprites[SpriteIDs.THORNS_UP], paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
             }
-            case TileIDs.SPIKES_RIGHT -> {
+            case TileIDs.THORNS_RIGHT -> {
                 if (isInWater) {
-                    graphics.drawImage(this.Sprites[SpriteIDs.SPIKES_WATER_RIGHT], paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
+                    graphics.drawImage(this.Sprites[SpriteIDs.THORNS_WATER_RIGHT], paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
                     break;
                 }
-                graphics.drawImage(this.Sprites[SpriteIDs.SPIKES_RIGHT], paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
+                graphics.drawImage(this.Sprites[SpriteIDs.THORNS_RIGHT], paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
             }
-            case TileIDs.SPIKES_DOWN -> {
+            case TileIDs.THORNS_DOWN -> {
                 if (isInWater) {
-                    graphics.drawImage(this.Sprites[SpriteIDs.SPIKES_WATER_DOWN], paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
+                    graphics.drawImage(this.Sprites[SpriteIDs.THORNS_WATER_DOWN], paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
                     break;
                 }
-                graphics.drawImage(this.Sprites[SpriteIDs.SPIKES_DOWN], paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
+                graphics.drawImage(this.Sprites[SpriteIDs.THORNS_DOWN], paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
             }
-            case TileIDs.SPIKES_LEFT -> {
+            case TileIDs.THORNS_LEFT -> {
                 if (isInWater) {
-                    graphics.drawImage(this.Sprites[SpriteIDs.SPIKES_WATER_LEFT], paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
+                    graphics.drawImage(this.Sprites[SpriteIDs.THORNS_WATER_LEFT], paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
                     break;
                 }
-                graphics.drawImage(this.Sprites[SpriteIDs.SPIKES_LEFT], paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
+                graphics.drawImage(this.Sprites[SpriteIDs.THORNS_LEFT], paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
             }
             case TileIDs.CRYSTAL ->
                     graphics.drawImage(this.Sprites[SpriteIDs.CRYSTAL], paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
@@ -461,16 +461,16 @@ public abstract class b extends FullCanvas {
                 this.z = true;
             }
             case 10 -> {
-                j = TestPointInsideSpikeStars(paramInt1, paramInt2);
+                j = TestPointInsideDynThorns(paramInt1, paramInt2);
                 if (j != -1) {
-                    k = (paramInt1 - this.SpikeStarsBottomLeft[j].x) * 12;
-                    int m = (paramInt2 - this.SpikeStarsBottomLeft[j].y) * 12;
+                    k = (paramInt1 - this.DynThornsBottomLeft[j].x) * 12;
+                    int m = (paramInt2 - this.DynThornsBottomLeft[j].y) * 12;
                     int n = this.w[j].x - k;
                     int i1 = this.w[j].y - m;
                     if ((n > -36 && n < 12) || (i1 > -36 && i1 < 12)) {
                         this.J.setColor(BounceColors.SKY);
                         this.J.fillRect(0, 0, 12, 12);
-                        this.J.drawImage(this.spriteSpikeStar, n, i1, Graphics.TOP | Graphics.LEFT);
+                        this.J.drawImage(this.spriteDynThorn, n, i1, Graphics.TOP | Graphics.LEFT);
                         graphics.drawImage(this.I, paramInt3, paramInt4, Graphics.TOP | Graphics.LEFT);
                         break;
                     }
@@ -704,14 +704,14 @@ public abstract class b extends FullCanvas {
         this.Sprites = new Image[67];
         this.Sprites[SpriteIDs.BRICK_WALL] = CreateTiles(ss, 1, 0); // Brick wall
         this.Sprites[SpriteIDs.RUBBER_WALL] = CreateTiles(ss, 1, 2); // Rubber wall
-        this.Sprites[SpriteIDs.SPIKES_UP] = CreateTiles(ss, 0, 3, BounceColors.SKY_ALPHA); // Spikes Up
-        this.Sprites[SpriteIDs.SPIKES_DOWN] = ModifyImage(this.Sprites[SpriteIDs.SPIKES_UP], ImageManipulation.FLIP_VERTICAL); // Spikes Down
-        this.Sprites[SpriteIDs.SPIKES_LEFT] = ModifyImage(this.Sprites[SpriteIDs.SPIKES_UP], ImageManipulation.ROTATE_90); // Spikes Left
-        this.Sprites[SpriteIDs.SPIKES_RIGHT] = ModifyImage(this.Sprites[SpriteIDs.SPIKES_UP], ImageManipulation.ROTATE_270); // Spikes Right
-        this.Sprites[SpriteIDs.SPIKES_WATER_UP] = CreateTiles(ss, 0, 3, BounceColors.WATER_ALPHA);
-        this.Sprites[SpriteIDs.SPIKES_WATER_DOWN] = ModifyImage(this.Sprites[6], ImageManipulation.FLIP_VERTICAL);
-        this.Sprites[SpriteIDs.SPIKES_WATER_LEFT] = ModifyImage(this.Sprites[6], ImageManipulation.ROTATE_90);
-        this.Sprites[SpriteIDs.SPIKES_WATER_RIGHT] = ModifyImage(this.Sprites[6], ImageManipulation.ROTATE_270);
+        this.Sprites[SpriteIDs.THORNS_UP] = CreateTiles(ss, 0, 3, BounceColors.SKY_ALPHA); // Thorns Up
+        this.Sprites[SpriteIDs.THORNS_DOWN] = ModifyImage(this.Sprites[SpriteIDs.THORNS_UP], ImageManipulation.FLIP_VERTICAL); // Thorns Down
+        this.Sprites[SpriteIDs.THORNS_LEFT] = ModifyImage(this.Sprites[SpriteIDs.THORNS_UP], ImageManipulation.ROTATE_90); // Thorns Left
+        this.Sprites[SpriteIDs.THORNS_RIGHT] = ModifyImage(this.Sprites[SpriteIDs.THORNS_UP], ImageManipulation.ROTATE_270); // Thorns Right
+        this.Sprites[SpriteIDs.THORNS_WATER_UP] = CreateTiles(ss, 0, 3, BounceColors.WATER_ALPHA);
+        this.Sprites[SpriteIDs.THORNS_WATER_DOWN] = ModifyImage(this.Sprites[6], ImageManipulation.FLIP_VERTICAL);
+        this.Sprites[SpriteIDs.THORNS_WATER_LEFT] = ModifyImage(this.Sprites[6], ImageManipulation.ROTATE_90);
+        this.Sprites[SpriteIDs.THORNS_WATER_RIGHT] = ModifyImage(this.Sprites[6], ImageManipulation.ROTATE_270);
         this.Sprites[SpriteIDs.CRYSTAL] = CreateTiles(ss, 0, 4);
         this.Sprites[SpriteIDs.CRYSTAL_ACTIVE] = CreateTiles(ss, 3, 4);
         this.Sprites[SpriteIDs.EXIT] = MirrorExitTile(CreateTiles(ss, 2, 3));
@@ -748,7 +748,7 @@ public abstract class b extends FullCanvas {
         this.Sprites[43] = ModifyImage(this.Sprites[41], ImageManipulation.FLIP_HORIZONTAL);
         this.Sprites[44] = ModifyImage(this.Sprites[42], ImageManipulation.FLIP_HORIZONTAL);
         this.Sprites[SpriteIDs.CRYSTAL_BALL] = CreateTiles(ss, 3, 3);
-        this.Sprites[SpriteIDs.SPIKE_STAR_QUARTER] = CreateTiles(ss, 1, 3);
+        this.Sprites[SpriteIDs.DYN_THORN_QUARTER] = CreateTiles(ss, 1, 3);
         this.Sprites[SpriteIDs.BALL] = CreateTiles(ss, 2, 0);
         this.Sprites[SpriteIDs.POPPED_BALL] = CreateTiles(ss, 0, 1);
         this.Sprites[SpriteIDs.BIG_BALL] = Mirror16x16Tile(CreateTiles(ss, 3, 0));

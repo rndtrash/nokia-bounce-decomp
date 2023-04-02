@@ -4,10 +4,10 @@ public final class TileIDs {
     public static final int EMPTY = 0;
     public static final int BRICK_WALL = 1;
     public static final int RUBBER_WALL = 2;
-    public static final int SPIKES_UP = 3;
-    public static final int SPIKES_RIGHT = 4;
-    public static final int SPIKES_DOWN = 5;
-    public static final int SPIKES_LEFT = 6;
+    public static final int THORNS_UP = 3;
+    public static final int THORNS_RIGHT = 4;
+    public static final int THORNS_DOWN = 5;
+    public static final int THORNS_LEFT = 6;
     public static final int CRYSTAL = 7;
     public static final int CRYSTAL_ACTIVE = 8;
 

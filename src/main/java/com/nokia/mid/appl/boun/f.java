@@ -461,17 +461,17 @@ public class f {
                 }
             }
             case 10 -> {
-                k = this.n.TestPointInsideSpikeStars(x, y);
+                k = this.n.TestPointInsideDynThorns(x, y);
                 if (k != -1) {
-                    int m = this.n.SpikeStarsBottomLeft[k].x * 12 + this.n.w[k].x;
-                    int n = this.n.SpikeStarsBottomLeft[k].y * 12 + this.n.w[k].y;
+                    int m = this.n.DynThornsBottomLeft[k].x * 12 + this.n.w[k].x;
+                    int n = this.n.DynThornsBottomLeft[k].y * 12 + this.n.w[k].y;
                     if (a(paramInt1 - this.p + 1, paramInt2 - this.p + 1, paramInt1 + this.p - 1, paramInt2 + this.p - 1, m + 1, n + 1, m + 24 - 1, n + 24 - 1)) {
                         bool = false;
                         KillBall();
                     }
                 }
             }
-            case TileIDs.SPIKES_UP, TileIDs.SPIKES_RIGHT, TileIDs.SPIKES_DOWN, TileIDs.SPIKES_LEFT -> {
+            case TileIDs.THORNS_UP, TileIDs.THORNS_RIGHT, TileIDs.THORNS_DOWN, TileIDs.THORNS_LEFT -> {
                 if (b(paramInt1, paramInt2, y, x, tileId)) {
                     bool = false;
                     KillBall();
